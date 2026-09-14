@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<title>WORLD DISASTER RADAR</title>
 
-<title>DESHATOR LIVE SEISMOGRAPH</title>
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
 <style>
 
@@ -15,172 +17,323 @@ content="width=device-width, initial-scale=1.0">
 box-sizing:border-box;
 }
 
-body{
+html,body{
 margin:0;
-background:#050505;
-color:white;
-font-family:Arial,sans-serif;
-padding:15px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-}
-
-h1{
-text-align:center;
-color:cyan;
-margin-bottom:5px;
-}
-
-.subtitle{
-text-align:center;
-color:#777;
-font-size:12px;
-margin-bottom:20px;
-}
-
-.card{
-background:#101010;
-border:1px solid #222;
-border-radius:20px;
-padding:18px;
-margin-bottom:15px;
-}
-
-.status{
-text-align:center;
-padding:14px;
-border-radius:12px;
-background:#181818;
-color:#ffd000;
-font-weight:bold;
-}
-
-.live{
-color:#00ff88;
-}
-
-.error{
-color:#ff4444;
-}
-
-select,
-input,
-button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border-radius:12px;
-font-size:15px;
-}
-
-select,
-input{
-background:#181818;
-color:white;
-border:1px solid #333;
-}
-
-button{
-border:none;
-background:cyan;
-color:black;
-font-weight:bold;
-cursor:pointer;
-}
-
-.red{
-background:#ff4444;
-color:white;
-}
-
-.station{
-text-align:center;
-font-size:22px;
-color:cyan;
-font-weight:bold;
-margin:20px 0;
-word-break:break-word;
-}
-
-.graph-box{
-position:relative;
-height:330px;
-}
-
-canvas{
 width:100%;
 height:100%;
-background:#050505;
-border:1px solid #222;
-border-radius:12px;
+background:#020509;
+font-family:Arial,sans-serif;
+color:white;
+overflow:hidden;
 }
 
-.watermark{
-position:absolute;
+/* =========================
+HEADER
+========================= */
 
-top:50%;
-left:50%;
+#header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:72px;
+z-index:1000;
 
-transform:
-translate(-50%,-50%);
+background:
+linear-gradient(
+90deg,
+#020509,
+#07131b,
+#020509
+);
 
-font-size:25px;
+border-bottom:
+1px solid #12303b;
 
+padding:10px;
+
+text-align:center;
+}
+
+#title{
+font-size:22px;
 font-weight:bold;
-
-color:
-rgba(255,255,255,.08);
-
-pointer-events:none;
-
-white-space:nowrap;
+letter-spacing:2px;
+color:#00eaff;
+text-shadow:
+0 0 10px #00bcd4;
 }
 
-.data{
+#subtitle{
+font-size:10px;
+color:#6f8790;
+margin-top:4px;
+letter-spacing:3px;
+}
+
+/* =========================
+MAP
+========================= */
+
+#map{
+position:absolute;
+top:72px;
+left:0;
+width:100%;
+height:calc(100% - 150px);
+background:#020509;
+}
+
+/* =========================
+BOTTOM PANEL
+========================= */
+
+#panel{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:78px;
+z-index:1000;
+
+background:
+rgba(3,10,15,.97);
+
+border-top:
+1px solid #12303b;
+
 display:grid;
 
 grid-template-columns:
-repeat(2,1fr);
+repeat(4,1fr);
 
-gap:10px;
-
-margin-top:15px;
+padding:8px;
+gap:5px;
 }
 
 .box{
-background:#181818;
-padding:12px;
-border-radius:12px;
 text-align:center;
+border-right:
+1px solid #132b35;
+}
+
+.box:last-child{
+border-right:none;
 }
 
 .label{
-font-size:11px;
-color:#777;
+font-size:9px;
+color:#64727a;
 }
 
 .value{
-color:cyan;
+margin-top:6px;
+font-size:15px;
 font-weight:bold;
-margin-top:5px;
-word-break:break-word;
+color:#00eaff;
 }
 
-.info{
-color:#aaa;
-font-size:13px;
-line-height:1.6;
-word-break:break-word;
-}
+/* =========================
+STATUS
+========================= */
 
-.footer{
-text-align:center;
-color:#555;
+#status{
+position:fixed;
+top:82px;
+left:10px;
+z-index:1000;
+
+background:
+rgba(0,0,0,.8);
+
+border:
+1px solid #173842;
+
+border-radius:8px;
+
+padding:8px 10px;
+
 font-size:11px;
-margin:20px;
+
+color:#00ff88;
+}
+
+/* =========================
+LEGEND
+========================= */
+
+#legend{
+position:fixed;
+
+right:10px;
+
+top:82px;
+
+z-index:1000;
+
+background:
+rgba(0,0,0,.82);
+
+border:
+1px solid #173842;
+
+border-radius:10px;
+
+padding:10px;
+
+font-size:10px;
+
+line-height:2;
+}
+
+.dot{
+display:inline-block;
+
+width:9px;
+height:9px;
+
+border-radius:50%;
+
+margin-right:5px;
+}
+
+.eq-dot{
+background:red;
+box-shadow:
+0 0 8px red;
+}
+
+.vol-normal{
+background:#00ff88;
+}
+
+.vol-yellow{
+background:#ffd000;
+}
+
+.vol-orange{
+background:orange;
+}
+
+.vol-red{
+background:red;
+}
+
+/* =========================
+EARTHQUAKE MARKER
+========================= */
+
+.eq-marker{
+
+width:14px;
+height:14px;
+
+background:#ff2020;
+
+border-radius:50%;
+
+border:
+2px solid white;
+
+box-shadow:
+0 0 14px red;
+
+}
+
+/* =========================
+VOLCANO MARKER
+========================= */
+
+.volcano-marker{
+
+width:18px;
+height:18px;
+
+border-radius:50% 50% 40% 40%;
+
+background:#00ff88;
+
+border:
+2px solid white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:9px;
+
+box-shadow:
+0 0 10px currentColor;
+
+}
+
+/* =========================
+WAVE
+========================= */
+
+.wave-circle{
+
+border:
+2px solid
+rgba(255,40,40,.75);
+
+background:
+rgba(255,0,0,.02);
+
+}
+
+/* =========================
+POPUP
+========================= */
+
+.leaflet-popup-content-wrapper{
+
+background:#081116;
+color:white;
+
+border:
+1px solid #17404c;
+
+}
+
+.leaflet-popup-tip{
+
+background:#081116;
+
+}
+
+.popup-title{
+
+font-weight:bold;
+
+color:#00eaff;
+
+margin-bottom:8px;
+
+}
+
+.popup-data{
+
+font-size:12px;
+
+line-height:1.8;
+
+}
+
+/* =========================
+LEAFLET DARK
+========================= */
+
+.leaflet-control-zoom a{
+
+background:#081116;
+
+color:#00eaff;
+
+border-color:#163843;
+
 }
 
 </style>
@@ -189,156 +342,69 @@ margin:20px;
 
 <body>
 
-<div class="container">
+<div id="header">
 
-<h1>🌍 DESHATOR</h1>
-
-<div class="subtitle">
-
-REAL-TIME SEISMIC MONITOR
-
+<div id="title">
+🌍 WORLD DISASTER RADAR
 </div>
 
-
-<div class="card">
-
-
-<div
-class="status"
-id="status">
-
-🟡 SISTEM SIAP
-
-</div>
-
-
-<input
-
-id="search"
-
-placeholder="🔎 Cari stream, contoh IU_ANMO"
-
-oninput="filterStreams()"
-
->
-
-
-<select
-id="streams">
-
-<option>
-
-Tekan MUAT STREAM
-
-</option>
-
-</select>
-
-
-<button
-onclick="loadStreams()">
-
-📡 MUAT STREAM EARTHSCOPE
-
-</button>
-
-
-<button
-onclick="connectStream()">
-
-▶ HUBUNGKAN STREAM
-
-</button>
-
-
-<button
-class="red"
-onclick="disconnectStream()">
-
-■ PUTUSKAN
-
-</button>
-
-
-<div
-class="station"
-id="station">
-
-BELUM ADA STREAM
-
-</div>
-
-
-<div class="graph-box">
-
-<canvas
-id="graph">
-</canvas>
-
-<div class="watermark">
-
-IG.RMN.TMS.TYNP3
-
+<div id="subtitle">
+LIVE EARTHQUAKE • VOLCANO MONITOR
 </div>
 
 </div>
 
 
-<div class="data">
+<div id="status">
+🟡 MEMUAT DATA...
+</div>
 
+
+<div id="legend">
+
+<div>
+<span class="dot eq-dot"></span>
+GEMPA
+</div>
+
+<div>
+<span class="dot vol-normal"></span>
+GUNUNG NORMAL
+</div>
+
+<div>
+<span class="dot vol-yellow"></span>
+AKTIVITAS NAIK
+</div>
+
+<div>
+<span class="dot vol-orange"></span>
+TINGGI
+</div>
+
+<div>
+<span class="dot vol-red"></span>
+WARNING
+</div>
+
+</div>
+
+
+<div id="map"></div>
+
+
+<div id="panel">
 
 <div class="box">
 
 <div class="label">
-
-STATUS
-
+GEMPA AKTIF
 </div>
 
 <div
 class="value"
-id="connection">
-
-OFFLINE
-
-</div>
-
-</div>
-
-
-<div class="box">
-
-<div class="label">
-
-STREAM
-
-</div>
-
-<div
-class="value"
-id="streamName">
-
--
-
-</div>
-
-</div>
-
-
-<div class="box">
-
-<div class="label">
-
-PAKET
-
-</div>
-
-<div
-class="value"
-id="packets">
-
+id="eqCount">
 0
-
 </div>
 
 </div>
@@ -347,930 +413,714 @@ id="packets">
 <div class="box">
 
 <div class="label">
-
-DATA
-
+GUNUNG
 </div>
 
 <div
 class="value"
-id="data">
-
-MENUNGGU
-
+id="volCount">
+0
 </div>
 
 </div>
 
 
+<div class="box">
+
+<div class="label">
+FPS
 </div>
-
-</div>
-
-
-<div class="card">
-
-<h3>📡 INFORMASI</h3>
 
 <div
-class="info"
-id="info">
-
-Sistem siap.
-
-<br><br>
-
-Tekan tombol
-<b>MUAT STREAM EARTHSCOPE</b>
-
-untuk mengambil daftar stream asli.
-
+class="value"
+id="fps">
+0
 </div>
 
 </div>
 
 
-<div class="footer">
+<div class="box">
 
-EARTHSCOPE • SEEDLINK
+<div class="label">
+UPDATE
+</div>
 
-<br><br>
-
-DESHATOR
-
-<br>
-
-IG.RMN.TMS.TYNP3
-
+<div
+class="value"
+id="update">
+-
 </div>
 
 </div>
+
+</div>
+
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 
 
 <script>
 
-
 /* =========================
-
-KONFIGURASI
-
+CONFIG
 ========================= */
 
+const USGS_EQ_URL =
+"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
 
-const HTTP_URL =
+const USGS_VOLCANO_STATUS =
+"https://volcanoes.usgs.gov/vsc/api/volcanoApi/geojson";
 
-"https://rtserve.earthscope.org/streams/json";
-
-
-const WS_URL =
-
-"wss://rtserve.earthscope.org/seedlink";
-
-
-let allStreams = [];
-
-let socket = null;
-
-let packetCount = 0;
+const UPDATE_TIME =
+60000;
 
 
 /* =========================
-
-ELEMENT
-
+MAP
 ========================= */
 
+const map =
+L.map("map",{
+zoomControl:true,
+worldCopyJump:true
+})
+.setView([15,0],2);
+
+
+L.tileLayer(
+
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+{
+maxZoom:18,
+attribution:"© OpenStreetMap"
+}
+
+)
+.addTo(map);
+
+
+/* =========================
+LAYERS
+========================= */
+
+const earthquakeLayer =
+L.layerGroup().addTo(map);
+
+const waveLayer =
+L.layerGroup().addTo(map);
+
+const volcanoLayer =
+L.layerGroup().addTo(map);
+
+
+/* =========================
+DATA
+========================= */
+
+let earthquakes = [];
+
+let volcanoes = [];
+
+let earthquakeMarkers = [];
+
+let waves = [];
+
+
+/* =========================
+STATUS
+========================= */
+
+function setStatus(text,color="#00ff88"){
 
 const status =
 document.getElementById("status");
 
-
-const streams =
-document.getElementById("streams");
-
-
-const info =
-document.getElementById("info");
-
-
-/* =========================
-
-STATUS
-
-========================= */
-
-
-function setStatus(text,type=""){
-
-
 status.innerText = text;
 
-
-status.className =
-"status";
-
-
-if(type){
-
-status.classList.add(type);
-
-}
-
+status.style.color = color;
 
 }
 
 
 /* =========================
-
-LOAD STREAM
-
+EARTHQUAKE
 ========================= */
 
-
-async function loadStreams(){
-
-
-setStatus(
-
-"🟡 MENGAMBIL STREAM..."
-
-);
-
-
-info.innerHTML =
-
-"Sedang mengambil daftar "
-
-+
-
-"stream dari EarthScope...";
-
-
-streams.innerHTML =
-
-"<option>Memuat...</option>";
-
+async function loadEarthquakes(){
 
 try{
 
+setStatus(
+"🟡 MENGAMBIL DATA GEMPA...",
+"#ffd000"
+);
+
 
 const response =
-
-await fetch(
-
-HTTP_URL
-
-);
+await fetch(USGS_EQ_URL);
 
 
 if(!response.ok){
 
 throw new Error(
-
-"HTTP " +
-
+"USGS HTTP " +
 response.status
-
 );
 
 }
 
 
 const data =
-
 await response.json();
 
 
-console.log(
+earthquakes =
+data.features;
 
-"EARTHSCOPE DATA:",
 
-data
+/* CLEAR */
+
+earthquakeLayer.clearLayers();
+
+waveLayer.clearLayers();
+
+waves = [];
+
+
+/* LOOP */
+
+earthquakes.forEach(eq => {
+
+const p =
+eq.properties;
+
+const g =
+eq.geometry.coordinates;
+
+
+const lng = g[0];
+
+const lat = g[1];
+
+const depth = g[2];
+
+const mag = p.mag;
+
+
+/* MARKER */
+
+const marker =
+L.marker(
+
+[lat,lng],
+
+{
+icon:
+L.divIcon({
+
+className:"",
+
+html:
+'<div class="eq-marker"></div>',
+
+iconSize:[14,14],
+
+iconAnchor:[7,7]
+
+})
+
+}
 
 );
 
 
-/* KUMPULKAN DATA */
+/* POPUP */
 
+marker.bindPopup(
 
-allStreams = [];
+'<div class="popup-title">' +
+'🔴 GEMPA BUMI' +
+'</div>' +
 
+'<div class="popup-data">' +
 
-/*
-EarthScope ringserver
-biasanya mengembalikan
-array stream.
-*/
+'📍 ' +
+(p.place || "Tidak diketahui") +
 
+'<br>' +
 
-if(Array.isArray(data)){
+'📊 Magnitudo: M ' +
+mag +
 
+'<br>' +
 
-allStreams = data;
+'⬇ Kedalaman: ' +
+depth +
+' km' +
 
+'<br>' +
 
-}
+'⏰ ' +
+new Date(p.time)
+.toLocaleString("id-ID") +
 
-
-else if(data.streams){
-
-
-allStreams = data.streams;
-
-
-}
-
-
-else{
-
-
-for(const key in data){
-
-
-if(Array.isArray(data[key])){
-
-
-allStreams =
-
-data[key];
-
-break;
-
-
-}
-
-
-}
-
-
-}
-
-
-if(allStreams.length === 0){
-
-
-throw new Error(
-
-"STREAM KOSONG"
+'</div>'
 
 );
 
 
-}
-
-
-/* TAMPILKAN */
-
-
-showStreams(
-allStreams
+marker.addTo(
+earthquakeLayer
 );
+
+
+/* WAVE OBJECT */
+
+waves.push({
+
+lat:lat,
+
+lng:lng,
+
+mag:mag || 0,
+
+radius:0,
+
+maxRadius:
+Math.max(
+80000,
+Math.min(
+mag * 180000,
+1200000
+)
+),
+
+circle:
+L.circle(
+[lat,lng],
+{
+radius:0,
+
+color:"#ff2020",
+
+weight:2,
+
+opacity:.65,
+
+fillOpacity:.02
+
+}
+).addTo(
+waveLayer
+)
+
+});
+
+
+});
+
+
+document
+.getElementById("eqCount")
+.innerText =
+earthquakes.length;
 
 
 setStatus(
-
-"🟢 STREAM DITEMUKAN: " +
-
-allStreams.length,
-
-"live"
-
+"🟢 DATA GEMPA LIVE"
 );
 
 
-info.innerHTML =
-
-"✅ Berhasil mengambil "
-
-+
-
-allStreams.length
-
-+
-
-" data stream.<br><br>"
-
-+
-
-"Pilih salah satu stream, "
-
-+
-
-"lalu tekan HUBUNGKAN.";
+updateTime();
 
 
 }
-
 
 catch(error){
 
-
 console.error(error);
 
-
 setStatus(
-
-"🔴 GAGAL MEMUAT STREAM",
-
-"error"
-
+"🔴 GAGAL DATA GEMPA",
+"#ff4444"
 );
 
-
-streams.innerHTML =
-
-"<option>Gagal memuat</option>";
-
-
-info.innerHTML =
-
-"ERROR:<br><br>"
-
-+
-
-error.message
-
-+
-
-"<br><br>"
-
-+
-
-"URL yang dicoba:<br>"
-
-+
-
-HTTP_URL;
-
-
 }
-
 
 }
 
 
 /* =========================
-
-TAMPIL STREAM
-
+VOLCANO STATUS
 ========================= */
 
-
-function showStreams(list){
-
-
-streams.innerHTML = "";
-
-
-/* BATASI AGAR HP TIDAK BERAT */
-
-
-const limited =
-
-list.slice(0,1000);
-
-
-limited.forEach(function(item){
-
-
-let id;
-
-
-/* JIKA STRING */
-
-
-if(typeof item === "string"){
-
-
-id = item;
-
-
-}
-
-
-/* JIKA OBJECT */
-
-
-else{
-
-
-id =
-
-item.stream ||
-item.id ||
-item.streamid ||
-item.name ||
-item.sid ||
-JSON.stringify(item);
-
-
-}
-
-
-const option =
-
-document.createElement(
-"option"
-);
-
-
-option.value = id;
-
-
-option.textContent = id;
-
-
-streams.appendChild(
-option
-);
-
-
-});
-
-
-}
-
-
-/* =========================
-
-CARI STREAM
-
-========================= */
-
-
-function filterStreams(){
-
-
-const keyword =
-
-document
-.getElementById("search")
-.value
-.toLowerCase();
-
-
-if(!keyword){
-
-
-showStreams(
-allStreams
-);
-
-return;
-
-
-}
-
-
-const filtered =
-
-allStreams.filter(function(item){
-
-
-const text =
-
-typeof item === "string"
-
-?
-
-item
-
-:
-
-JSON.stringify(item);
-
-
-return text
-.toLowerCase()
-.includes(keyword);
-
-
-});
-
-
-showStreams(
-filtered
-);
-
-
-}
-
-
-/* =========================
-
-CONNECT
-
-========================= */
-
-
-function connectStream(){
-
-
-const selected =
-
-streams.value;
-
-
-if(
-
-!selected ||
-
-selected === "Memuat..." ||
-
-selected === "Gagal memuat"
-
-){
-
-
-alert(
-
-"Muat dan pilih stream dulu"
-
-);
-
-return;
-
-
-}
-
-
-disconnectStream();
-
-
-document
-.getElementById("station")
-.innerText =
-selected;
-
-
-document
-.getElementById("streamName")
-.innerText =
-selected;
-
-
-document
-.getElementById("connection")
-.innerText =
-"MENGHUBUNGKAN";
-
-
-setStatus(
-
-"🟡 MENGHUBUNGKAN..."
-
-);
-
-
-packetCount = 0;
-
-
-document
-.getElementById("packets")
-.innerText =
-"0";
-
+async function loadVolcanoes(){
 
 try{
 
-
-socket =
-
-new WebSocket(
-WS_URL
+const response =
+await fetch(
+USGS_VOLCANO_STATUS
 );
 
 
-socket.binaryType =
-"arraybuffer";
+if(!response.ok){
 
-
-socket.onopen =
-function(){
-
-
-document
-.getElementById("connection")
-.innerText =
-"ONLINE";
-
-
-setStatus(
-
-"🟢 TERHUBUNG EARTHSCOPE",
-
-"live"
-
+throw new Error(
+"VOLCANO HTTP " +
+response.status
 );
 
-
-info.innerHTML =
-
-"WebSocket berhasil terhubung."
-
-+
-
-"<br><br>"
-
-+
-
-"📡 Meminta informasi "
-
-+
-
-"stream dari server...";
+}
 
 
-/*
-Minta info stream dulu
-
-SeedLink command
-harus dikirim
-sebagai WebSocket frame
-*/
+const data =
+await response.json();
 
 
-socket.send(
-
-"INFO STREAMS"
-
-);
+volcanoes =
+data.features || [];
 
 
-};
+/* CLEAR */
+
+volcanoLayer.clearLayers();
 
 
-socket.onmessage =
-function(event){
+volcanoes.forEach(v => {
+
+const props =
+v.properties || {};
+
+const coords =
+v.geometry
+?
+v.geometry.coordinates
+:
+null;
 
 
-if(typeof event.data ===
-"string"){
-
-
-console.log(
-
-"SEEDLINK:",
-
-event.data
-
-);
-
-
-info.innerHTML =
-
-"RESPONS SERVER:<br><br>"
-
-+
-
-event.data
-.substring(0,1000);
-
+if(!coords){
 
 return;
 
+}
+
+
+const lng =
+coords[0];
+
+const lat =
+coords[1];
+
+
+/* STATUS */
+
+const status =
+String(
+
+props.colorCode ||
+
+props.color ||
+
+props.status ||
+
+"GREEN"
+
+).toUpperCase();
+
+
+let color =
+"#00ff88";
+
+
+if(
+status.includes("YELLOW")
+){
+
+color="#ffd000";
 
 }
 
 
-/* DATA BINARY */
+if(
+status.includes("ORANGE")
+){
 
-
-if(event.data instanceof ArrayBuffer){
-
-
-packetCount++;
-
-
-document
-.getElementById("packets")
-.innerText =
-packetCount;
-
-
-document
-.getElementById("data")
-.innerText =
-"DATA BINARY";
-
-
-setStatus(
-
-"🟢 DATA MASUK",
-
-"live"
-
-);
-
+color="orange";
 
 }
 
 
-};
+if(
+status.includes("RED")
+){
+
+color="red";
+
+}
 
 
-socket.onerror =
-function(error){
+/* ICON */
+
+const icon =
+L.divIcon({
+
+className:"",
+
+html:
+
+'<div ' +
+
+'style="' +
+
+'width:18px;' +
+
+'height:18px;' +
+
+'background:' +
+color +
+';' +
+
+'border:2px solid white;' +
+
+'border-radius:50% 50% 35% 35%;' +
+
+'display:flex;' +
+
+'align-items:center;' +
+
+'justify-content:center;' +
+
+'font-size:10px;' +
+
+'box-shadow:0 0 12px ' +
+color +
+';' +
+
+'">' +
+
+'🌋' +
+
+'</div>',
+
+iconSize:[18,18],
+
+iconAnchor:[9,9]
+
+});
 
 
-console.error(error);
+const marker =
+L.marker(
+[lat,lng],
+{icon:icon}
+);
 
 
-setStatus(
+const name =
 
-"🔴 KONEKSI ERROR",
+props.volcanoName ||
 
-"error"
+props.name ||
+
+props.volName ||
+
+"Volcano";
+
+
+marker.bindPopup(
+
+'<div class="popup-title">' +
+
+'🌋 ' +
+name +
+
+'</div>' +
+
+'<div class="popup-data">' +
+
+'STATUS: ' +
+status +
+
+'</div>'
 
 );
 
 
-document
-.getElementById("connection")
-.innerText =
-"ERROR";
-
-
-};
-
-
-socket.onclose =
-function(){
-
-
-document
-.getElementById("connection")
-.innerText =
-"OFFLINE";
-
-
-setStatus(
-
-"🔴 TERPUTUS",
-
-"error"
-
+marker.addTo(
+volcanoLayer
 );
 
 
-};
+});
+
+
+document
+.getElementById("volCount")
+.innerText =
+volcanoes.length;
 
 
 }
 
 catch(error){
 
-
-console.error(error);
-
-
-setStatus(
-
-"🔴 GAGAL KONEKSI",
-
-"error"
-
+console.error(
+"VOLCANO ERROR:",
+error
 );
 
+/*
+Tidak menghentikan
+sistem gempa
+jika data gunung gagal
+*/
 
 }
-
 
 }
 
 
 /* =========================
-
-DISCONNECT
-
+ANIMASI WAVE
 ========================= */
 
+function animateWaves(){
 
-function disconnectStream(){
+waves.forEach(wave => {
+
+wave.radius +=
+Math.max(
+5000,
+wave.mag * 1500
+);
 
 
-if(socket){
+if(
+wave.radius >
+wave.maxRadius
+){
 
-
-socket.close();
-
-
-socket = null;
-
+wave.radius = 0;
 
 }
 
+
+/* UPDATE */
+
+wave.circle.setRadius(
+wave.radius
+);
+
+
+});
+
+requestAnimationFrame(
+animateWaves
+);
+
+}
+
+animateWaves();
+
+
+/* =========================
+FPS
+========================= */
+
+let frameCount = 0;
+
+let lastFpsTime =
+performance.now();
+
+
+function calculateFPS(){
+
+frameCount++;
+
+const now =
+performance.now();
+
+
+if(
+now -
+lastFpsTime
+>=
+1000
+){
 
 document
-.getElementById("connection")
+.getElementById("fps")
 .innerText =
-"OFFLINE";
+frameCount;
 
 
-}
+frameCount = 0;
 
-
-/* =========================
-
-CANVAS
-
-========================= */
-
-
-const canvas =
-
-document.getElementById(
-"graph"
-);
-
-
-const ctx =
-
-canvas.getContext(
-"2d"
-);
-
-
-function resize(){
-
-
-canvas.width =
-canvas.offsetWidth;
-
-
-canvas.height =
-canvas.offsetHeight;
-
+lastFpsTime = now;
 
 }
-
-
-resize();
-
-
-window.addEventListener(
-
-"resize",
-
-resize
-
-);
-
-
-function draw(){
-
-
-ctx.clearRect(
-
-0,
-0,
-canvas.width,
-canvas.height
-
-);
-
-
-/* GARIS TENGAH */
-
-
-ctx.beginPath();
-
-
-ctx.strokeStyle =
-
-"rgba(255,255,255,.1)";
-
-
-ctx.moveTo(
-
-0,
-
-canvas.height/2
-
-);
-
-
-ctx.lineTo(
-
-canvas.width,
-
-canvas.height/2
-
-);
-
-
-ctx.stroke();
 
 
 requestAnimationFrame(
-draw
+calculateFPS
 );
 
+}
+
+calculateFPS();
+
+
+/* =========================
+TIME
+========================= */
+
+function updateTime(){
+
+const now =
+new Date();
+
+
+document
+.getElementById("update")
+.innerText =
+
+now
+.toLocaleTimeString(
+"id-ID"
+);
 
 }
 
 
-draw();
+/* =========================
+LOAD ALL
+========================= */
+
+async function loadAll(){
+
+await loadEarthquakes();
+
+await loadVolcanoes();
+
+}
+
+
+loadAll();
+
+
+setInterval(
+
+loadAll,
+
+UPDATE_TIME
+
+);
 
 
 </script>
