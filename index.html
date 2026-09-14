@@ -1,192 +1,190 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DESHATOR • LIVE SEISMOGRAPH</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DESHATOR LIVE SEISMOGRAPH</title>
 
 <style>
 
 *{
-    box-sizing:border-box;
+box-sizing:border-box;
 }
 
 body{
-    margin:0;
-    background:#050505;
-    color:white;
-    font-family:Arial,sans-serif;
-    padding:15px;
+margin:0;
+background:#050505;
+color:white;
+font-family:Arial,sans-serif;
+padding:15px;
 }
 
 .container{
-    max-width:950px;
-    margin:auto;
+max-width:900px;
+margin:auto;
 }
 
 h1{
-    text-align:center;
-    color:#00ffff;
-    margin:10px 0 5px;
+text-align:center;
+color:cyan;
+margin-bottom:5px;
 }
 
 .subtitle{
-    text-align:center;
-    color:#777;
-    font-size:12px;
-    margin-bottom:20px;
-    letter-spacing:1px;
+text-align:center;
+color:#777;
+font-size:12px;
+margin-bottom:20px;
 }
 
 .card{
-    background:#101010;
-    border:1px solid #252525;
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:15px;
+background:#101010;
+border:1px solid #222;
+border-radius:20px;
+padding:18px;
+margin-bottom:15px;
 }
 
 .status{
-    text-align:center;
-    padding:14px;
-    background:#181818;
-    border-radius:12px;
-    font-weight:bold;
-    color:#ffd000;
+text-align:center;
+padding:14px;
+border-radius:12px;
+background:#181818;
+color:#ffd000;
+font-weight:bold;
 }
 
-.status.live{
-    color:#00ff88;
+.live{
+color:#00ff88;
 }
 
-.status.error{
-    color:#ff4444;
-}
-
-.station-title{
-    text-align:center;
-    color:#777;
-    font-size:12px;
-    margin-top:20px;
-    letter-spacing:2px;
-}
-
-.station{
-    text-align:center;
-    color:#00ffff;
-    font-size:22px;
-    font-weight:bold;
-    margin:10px;
+.error{
+color:#ff4444;
 }
 
 select,
+input,
 button{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    border:1px solid #333;
-    font-size:15px;
-    margin-top:10px;
+width:100%;
+padding:14px;
+margin-top:10px;
+border-radius:12px;
+font-size:15px;
 }
 
-select{
-    background:#181818;
-    color:white;
+select,
+input{
+background:#181818;
+color:white;
+border:1px solid #333;
 }
 
 button{
-    border:none;
-    background:#00ffff;
-    color:black;
-    font-weight:bold;
-    cursor:pointer;
+border:none;
+background:cyan;
+color:black;
+font-weight:bold;
+cursor:pointer;
 }
 
-button.stop{
-    background:#ff4444;
-    color:white;
+.red{
+background:#ff4444;
+color:white;
+}
+
+.station{
+text-align:center;
+font-size:22px;
+color:cyan;
+font-weight:bold;
+margin:20px 0;
+word-break:break-word;
 }
 
 .graph-box{
-    position:relative;
-    height:350px;
-    margin-top:20px;
+position:relative;
+height:330px;
 }
 
 canvas{
-    width:100%;
-    height:100%;
-    background:#050505;
-    border:1px solid #222;
-    border-radius:12px;
+width:100%;
+height:100%;
+background:#050505;
+border:1px solid #222;
+border-radius:12px;
 }
 
 .watermark{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:28px;
-    font-weight:bold;
-    color:rgba(255,255,255,.07);
-    white-space:nowrap;
-    pointer-events:none;
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+font-size:25px;
+
+font-weight:bold;
+
+color:
+rgba(255,255,255,.08);
+
+pointer-events:none;
+
+white-space:nowrap;
 }
 
 .data{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    margin-top:15px;
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:10px;
+
+margin-top:15px;
 }
 
 .box{
-    background:#181818;
-    border-radius:12px;
-    padding:12px;
-    text-align:center;
+background:#181818;
+padding:12px;
+border-radius:12px;
+text-align:center;
 }
 
 .label{
-    font-size:11px;
-    color:#777;
+font-size:11px;
+color:#777;
 }
 
 .value{
-    color:#00ffff;
-    font-weight:bold;
-    margin-top:7px;
-    font-size:15px;
-    word-break:break-word;
+color:cyan;
+font-weight:bold;
+margin-top:5px;
+word-break:break-word;
 }
 
 .info{
-    color:#999;
-    line-height:1.7;
-    font-size:13px;
+color:#aaa;
+font-size:13px;
+line-height:1.6;
+word-break:break-word;
 }
 
 .footer{
-    text-align:center;
-    color:#555;
-    font-size:11px;
-    margin:20px;
-}
-
-@media(max-width:500px){
-
-    .data{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .watermark{
-        font-size:17px;
-    }
-
+text-align:center;
+color:#555;
+font-size:11px;
+margin:20px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -196,72 +194,77 @@ canvas{
 <h1>🌍 DESHATOR</h1>
 
 <div class="subtitle">
-REAL-TIME SEISMIC WAVEFORM MONITOR
+
+REAL-TIME SEISMIC MONITOR
+
 </div>
 
 
 <div class="card">
 
+
 <div
 class="status"
 id="status">
 
-🟡 MEMUAT SISTEM...
+🟡 SISTEM SIAP
 
 </div>
 
 
-<div class="station-title">
+<input
 
-📡 PILIH STREAM SEISMOGRAF
+id="search"
 
-</div>
+placeholder="🔎 Cari stream, contoh IU_ANMO"
+
+oninput="filterStreams()"
+
+>
 
 
-<select id="streamSelect">
+<select
+id="streams">
 
 <option>
-Memuat daftar stream...
+
+Tekan MUAT STREAM
+
 </option>
 
 </select>
 
 
-<button onclick="loadStreams()">
+<button
+onclick="loadStreams()">
 
-🔄 MUAT ULANG DAFTAR STREAM
-
-</button>
-
-
-<button onclick="connectSelectedStream()">
-
-📡 HUBUNGKAN WAVEFORM LIVE
+📡 MUAT STREAM EARTHSCOPE
 
 </button>
 
 
 <button
-class="stop"
-onclick="disconnectStream()">
+onclick="connectStream()">
 
-🔴 PUTUSKAN KONEKSI
+▶ HUBUNGKAN STREAM
 
 </button>
 
 
-<div class="station-title">
+<button
+class="red"
+onclick="disconnectStream()">
 
-STASIUN / STREAM AKTIF
+■ PUTUSKAN
 
-</div>
+</button>
 
 
 <div
 class="station"
 id="station">
 
-BELUM DIPILIH
+BELUM ADA STREAM
 
 </div>
 
@@ -271,7 +274,6 @@ BELUM DIPILIH
 <canvas
 id="graph">
 </canvas>
-
 
 <div class="watermark">
 
@@ -284,10 +286,13 @@ IG.RMN.TMS.TYNP3
 
 <div class="data">
 
+
 <div class="box">
 
 <div class="label">
-KONEKSI
+
+STATUS
+
 </div>
 
 <div
@@ -304,7 +309,28 @@ OFFLINE
 <div class="box">
 
 <div class="label">
+
+STREAM
+
+</div>
+
+<div
+class="value"
+id="streamName">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+
 PAKET
+
 </div>
 
 <div
@@ -321,35 +347,21 @@ id="packets">
 <div class="box">
 
 <div class="label">
-SAMPLE
-</div>
 
-<div
-class="value"
-id="samples">
-
-0
-
-</div>
-
-</div>
-
-
-<div class="box">
-
-<div class="label">
 DATA
+
 </div>
 
 <div
 class="value"
-id="dataStatus">
+id="data">
 
 MENUNGGU
 
 </div>
 
 </div>
+
 
 </div>
 
@@ -358,15 +370,20 @@ MENUNGGU
 
 <div class="card">
 
-<h3>
-📡 INFORMASI SISTEM
-</h3>
+<h3>📡 INFORMASI</h3>
 
 <div
 class="info"
 id="info">
 
-Memuat daftar stream dari EarthScope...
+Sistem siap.
+
+<br><br>
+
+Tekan tombol
+<b>MUAT STREAM EARTHSCOPE</b>
+
+untuk mengambil daftar stream asli.
 
 </div>
 
@@ -375,11 +392,11 @@ Memuat daftar stream dari EarthScope...
 
 <div class="footer">
 
-EARTHSCOPE • SEEDLINK • miniSEED
+EARTHSCOPE • SEEDLINK
 
 <br><br>
 
-DESHATOR LIVE SEISMOGRAPH
+DESHATOR
 
 <br>
 
@@ -390,129 +407,63 @@ IG.RMN.TMS.TYNP3
 </div>
 
 
-<script type="module">
+<script>
 
 
-/* ==========================================
-   IMPORT SEISPLOTJS
+/* =========================
 
-   Library untuk parsing data seismograf
-========================================== */
+KONFIGURASI
 
-
-import * as sp from
-
-"https://cdn.jsdelivr.net/npm/seisplotjs@3.2.7/dist/seisplotjs.min.js";
+========================= */
 
 
+const HTTP_URL =
 
-/* ==========================================
-   KONFIGURASI
-========================================== */
-
-
-const EARTHSCOPE_HOST =
-
-"https://rtserve.earthscope.org";
+"https://rtserve.earthscope.org/streams/json";
 
 
-const SEEDLINK_URL =
+const WS_URL =
 
 "wss://rtserve.earthscope.org/seedlink";
 
 
-const STREAMS_URL =
-
-EARTHSCOPE_HOST + "/streams/json";
-
+let allStreams = [];
 
 let socket = null;
 
 let packetCount = 0;
 
-let sampleCount = 0;
 
-let streamList = [];
+/* =========================
 
+ELEMENT
 
-/* ==========================================
-   ELEMENT
-========================================== */
+========================= */
 
 
 const status =
-
-document.getElementById(
-"status"
-);
+document.getElementById("status");
 
 
-const streamSelect =
-
-document.getElementById(
-"streamSelect"
-);
-
-
-const stationText =
-
-document.getElementById(
-"station"
-);
-
-
-const connectionText =
-
-document.getElementById(
-"connection"
-);
-
-
-const packetText =
-
-document.getElementById(
-"packets"
-);
-
-
-const sampleText =
-
-document.getElementById(
-"samples"
-);
-
-
-const dataStatus =
-
-document.getElementById(
-"dataStatus"
-);
+const streams =
+document.getElementById("streams");
 
 
 const info =
-
-document.getElementById(
-"info"
-);
+document.getElementById("info");
 
 
+/* =========================
 
-/* ==========================================
-   STATUS
-========================================== */
+STATUS
 
-
-function setStatus(
-
-text,
-
-type = ""
-
-){
+========================= */
 
 
-status.innerText =
-text;
+function setStatus(text,type=""){
+
+
+status.innerText = text;
 
 
 status.className =
@@ -521,9 +472,7 @@ status.className =
 
 if(type){
 
-status.classList.add(
-type
-);
+status.classList.add(type);
 
 }
 
@@ -531,334 +480,35 @@ type
 }
 
 
+/* =========================
 
-/* ==========================================
-   CANVAS
-========================================== */
+LOAD STREAM
 
+========================= */
 
-const canvas =
 
-document.getElementById(
-"graph"
-);
-
-
-const ctx =
-
-canvas.getContext(
-"2d"
-);
-
-
-let points = [];
-
-
-
-function resizeCanvas(){
-
-
-canvas.width =
-canvas.offsetWidth;
-
-
-canvas.height =
-canvas.offsetHeight;
-
-
-points = [];
-
-
-for(
-
-let i = 0;
-
-i < canvas.width;
-
-i++
-
-){
-
-points.push(
-
-canvas.height / 2
-
-);
-
-}
-
-
-}
-
-
-resizeCanvas();
-
-
-window.addEventListener(
-
-"resize",
-
-resizeCanvas
-
-);
-
-
-
-function drawGraph(){
-
-
-ctx.clearRect(
-
-0,
-
-0,
-
-canvas.width,
-
-canvas.height
-
-);
-
-
-/* GARIS TENGAH */
-
-
-ctx.beginPath();
-
-
-ctx.strokeStyle =
-
-"rgba(255,255,255,.08)";
-
-
-ctx.lineWidth = 1;
-
-
-ctx.moveTo(
-
-0,
-
-canvas.height / 2
-
-);
-
-
-ctx.lineTo(
-
-canvas.width,
-
-canvas.height / 2
-
-);
-
-
-ctx.stroke();
-
-
-
-/* WAVEFORM */
-
-
-ctx.beginPath();
-
-
-ctx.strokeStyle =
-"#00ffff";
-
-
-ctx.lineWidth = 2;
-
-
-for(
-
-let i = 0;
-
-i < points.length;
-
-i++
-
-){
-
-ctx.lineTo(
-
-i,
-
-points[i]
-
-);
-
-}
-
-
-ctx.stroke();
-
-
-requestAnimationFrame(
-drawGraph
-);
-
-
-}
-
-
-drawGraph();
-
-
-
-/* ==========================================
-   TAMBAH SAMPLE ASLI
-========================================== */
-
-
-let maxAmplitude = 1;
-
-
-function addSamples(samples){
-
-
-if(
-
-!samples ||
-
-samples.length === 0
-
-){
-
-return;
-
-}
-
-
-/* CARI AMPLITUDO */
-
-
-for(
-
-const value of samples
-
-){
-
-const absValue =
-Math.abs(value);
-
-
-if(
-
-absValue >
-maxAmplitude
-
-){
-
-maxAmplitude =
-absValue;
-
-}
-
-}
-
-
-/* MASUKKAN KE GRAFIK */
-
-
-const step =
-
-Math.max(
-
-1,
-
-Math.floor(
-samples.length / 50
-)
-
-);
-
-
-for(
-
-let i = 0;
-
-i < samples.length;
-
-i += step
-
-){
-
-
-const value =
-samples[i];
-
-
-const normalized =
-
-value /
-maxAmplitude;
-
-
-const y =
-
-canvas.height / 2
-
--
-
-normalized *
-(canvas.height * 0.4);
-
-
-points.push(y);
-
-
-if(
-
-points.length >
-canvas.width
-
-){
-
-points.shift();
-
-}
-
-
-sampleCount++;
-
-}
-
-
-sampleText.innerText =
-sampleCount;
-
-
-dataStatus.innerText =
-"WAVEFORM LIVE";
-
-
-}
-
-
-
-/* ==========================================
-   AMBIL DAFTAR STREAM
-========================================== */
-
-
-window.loadStreams =
-async function(){
+async function loadStreams(){
 
 
 setStatus(
 
-"🟡 MENGAMBIL DAFTAR STREAM..."
+"🟡 MENGAMBIL STREAM..."
 
 );
 
 
 info.innerHTML =
 
-"Sedang meminta daftar stream "
+"Sedang mengambil daftar "
+
 +
 
-"yang tersedia dari server EarthScope.";
+"stream dari EarthScope...";
 
+
+streams.innerHTML =
+
+"<option>Memuat...</option>";
 
 
 try{
@@ -868,22 +518,17 @@ const response =
 
 await fetch(
 
-STREAMS_URL +
-"?t=" +
-Date.now()
+HTTP_URL
 
 );
 
 
-if(
-
-!response.ok
-
-){
+if(!response.ok){
 
 throw new Error(
 
 "HTTP " +
+
 response.status
 
 );
@@ -897,61 +542,41 @@ await response.json();
 
 
 console.log(
-"STREAM DATA:",
+
+"EARTHSCOPE DATA:",
+
 data
+
 );
 
 
-/* KOSONGKAN */
+/* KUMPULKAN DATA */
 
 
-streamSelect.innerHTML =
-"";
+allStreams = [];
 
 
-streamList = [];
+/*
+EarthScope ringserver
+biasanya mengembalikan
+array stream.
+*/
 
 
-/* ========================================
-   FORMAT JSON BISA BERBEDA
-======================================== */
+if(Array.isArray(data)){
 
 
-let streams = [];
+allStreams = data;
 
-
-if(
-
-Array.isArray(data)
-
-){
-
-streams =
-data;
 
 }
 
 
-else if(
-
-data.streams
-
-){
-
-streams =
-data.streams;
-
-}
+else if(data.streams){
 
 
-else if(
+allStreams = data.streams;
 
-data.stream
-
-){
-
-streams =
-data.stream;
 
 }
 
@@ -959,26 +584,18 @@ data.stream;
 else{
 
 
-for(
+for(const key in data){
 
-const key in data
 
-){
+if(Array.isArray(data[key])){
 
-if(
 
-Array.isArray(
-data[key]
-)
+allStreams =
 
-){
-
-streams =
 data[key];
 
 break;
 
-}
 
 }
 
@@ -986,117 +603,35 @@ break;
 }
 
 
-/* ========================================
-   BATASI AGAR WEBSITE TIDAK BERAT
-======================================== */
+}
 
 
-streams =
-streams.slice(
+if(allStreams.length === 0){
 
-0,
-
-200
-
-);
-
-
-
-if(
-
-streams.length === 0
-
-){
 
 throw new Error(
 
-"Daftar stream kosong"
+"STREAM KOSONG"
 
-);
-
-}
-
-
-/* ========================================
-   BUAT OPTION
-======================================== */
-
-
-streams.forEach(
-
-(stream,index) => {
-
-
-let streamID;
-
-
-if(
-
-typeof stream ===
-"string"
-
-){
-
-streamID =
-stream;
-
-}
-
-
-else{
-
-
-streamID =
-
-stream.stream ||
-stream.id ||
-stream.streamid ||
-stream.name ||
-JSON.stringify(stream);
-
-
-}
-
-
-streamList.push(
-streamID
-);
-
-
-const option =
-
-document.createElement(
-"option"
-);
-
-
-option.value =
-streamID;
-
-
-option.textContent =
-
-streamID;
-
-
-streamSelect.appendChild(
-option
 );
 
 
 }
 
 
+/* TAMPILKAN */
+
+
+showStreams(
+allStreams
 );
 
 
 setStatus(
 
-"🟢 " +
+"🟢 STREAM DITEMUKAN: " +
 
-streamList.length +
-
-" STREAM DITEMUKAN",
+allStreams.length,
 
 "live"
 
@@ -1105,15 +640,23 @@ streamList.length +
 
 info.innerHTML =
 
-"📡 Daftar stream berhasil dimuat.<br><br>"
+"✅ Berhasil mengambil "
 
 +
 
-"Pilih salah satu stream kemudian "
+allStreams.length
 
 +
 
-"tekan <b>HUBUNGKAN WAVEFORM LIVE</b>.";
+" data stream.<br><br>"
+
++
+
+"Pilih salah satu stream, "
+
++
+
+"lalu tekan HUBUNGKAN.";
 
 
 }
@@ -1134,85 +677,219 @@ setStatus(
 );
 
 
+streams.innerHTML =
+
+"<option>Gagal memuat</option>";
+
+
 info.innerHTML =
 
-"Server tidak memberikan daftar "
+"ERROR:<br><br>"
 
 +
 
-"stream melalui HTTP/CORS.<br><br>"
+error.message
 
 +
-
-"Error: " +
-
-error.message +
 
 "<br><br>"
 
 +
 
-"Koneksi SeedLink masih bisa "
+"URL yang dicoba:<br>"
 
 +
 
-"membutuhkan konfigurasi stream "
-
-+
-
-"melalui protokol SeedLink.";
-
-
-streamSelect.innerHTML =
-
-"<option>Daftar otomatis tidak tersedia</option>";
+HTTP_URL;
 
 
 }
 
 
-};
+}
 
 
+/* =========================
+
+TAMPIL STREAM
+
+========================= */
 
 
-/* ==========================================
-   KONEKSI SEEDLINK
-========================================== */
+function showStreams(list){
 
 
-window.connectSelectedStream =
-function(){
+streams.innerHTML = "";
+
+
+/* BATASI AGAR HP TIDAK BERAT */
+
+
+const limited =
+
+list.slice(0,1000);
+
+
+limited.forEach(function(item){
+
+
+let id;
+
+
+/* JIKA STRING */
+
+
+if(typeof item === "string"){
+
+
+id = item;
+
+
+}
+
+
+/* JIKA OBJECT */
+
+
+else{
+
+
+id =
+
+item.stream ||
+item.id ||
+item.streamid ||
+item.name ||
+item.sid ||
+JSON.stringify(item);
+
+
+}
+
+
+const option =
+
+document.createElement(
+"option"
+);
+
+
+option.value = id;
+
+
+option.textContent = id;
+
+
+streams.appendChild(
+option
+);
+
+
+});
+
+
+}
+
+
+/* =========================
+
+CARI STREAM
+
+========================= */
+
+
+function filterStreams(){
+
+
+const keyword =
+
+document
+.getElementById("search")
+.value
+.toLowerCase();
+
+
+if(!keyword){
+
+
+showStreams(
+allStreams
+);
+
+return;
+
+
+}
+
+
+const filtered =
+
+allStreams.filter(function(item){
+
+
+const text =
+
+typeof item === "string"
+
+?
+
+item
+
+:
+
+JSON.stringify(item);
+
+
+return text
+.toLowerCase()
+.includes(keyword);
+
+
+});
+
+
+showStreams(
+filtered
+);
+
+
+}
+
+
+/* =========================
+
+CONNECT
+
+========================= */
+
+
+function connectStream(){
 
 
 const selected =
 
-streamSelect.value;
+streams.value;
 
 
 if(
 
 !selected ||
 
-selected.includes(
-"Memuat"
-)
+selected === "Memuat..." ||
 
-||
-
-selected.includes(
-"tidak tersedia"
-)
+selected === "Gagal memuat"
 
 ){
 
+
 alert(
 
-"Pilih stream terlebih dahulu"
+"Muat dan pilih stream dulu"
 
 );
 
 return;
+
 
 }
 
@@ -1220,32 +897,38 @@ return;
 disconnectStream();
 
 
-packetCount = 0;
-
-sampleCount = 0;
-
-packetText.innerText = 0;
-
-sampleText.innerText = 0;
-
-
-stationText.innerText =
+document
+.getElementById("station")
+.innerText =
 selected;
+
+
+document
+.getElementById("streamName")
+.innerText =
+selected;
+
+
+document
+.getElementById("connection")
+.innerText =
+"MENGHUBUNGKAN";
 
 
 setStatus(
 
-"🟡 MENGHUBUNGKAN SEEDLINK..."
+"🟡 MENGHUBUNGKAN..."
 
 );
 
 
-connectionText.innerText =
-"MENGHUBUNGKAN";
+packetCount = 0;
 
 
-dataStatus.innerText =
-"MENUNGGU DATA";
+document
+.getElementById("packets")
+.innerText =
+"0";
 
 
 try{
@@ -1254,7 +937,7 @@ try{
 socket =
 
 new WebSocket(
-SEEDLINK_URL
+WS_URL
 );
 
 
@@ -1262,18 +945,19 @@ socket.binaryType =
 "arraybuffer";
 
 
-
 socket.onopen =
 function(){
 
 
-connectionText.innerText =
+document
+.getElementById("connection")
+.innerText =
 "ONLINE";
 
 
 setStatus(
 
-"🟢 SEEDLINK TERHUBUNG",
+"🟢 TERHUBUNG EARTHSCOPE",
 
 "live"
 
@@ -1282,292 +966,33 @@ setStatus(
 
 info.innerHTML =
 
-"📡 Koneksi berhasil.<br><br>"
+"WebSocket berhasil terhubung."
 
 +
-
-"Meminta stream:<br>"
-
-+
-
-"<b>" +
-
-selected +
-
-"</b>";
-
-
-/* ======================================
-   HELLO
-====================================== */
-
-
-socket.send(
-"HELLO"
-);
-
-
-/*
-   CATATAN:
-
-   Format stream EarthScope bisa berupa
-   FDSN Source ID seperti:
-
-   FDSN:IU_ANMO_00_B_H_Z/MSEED
-
-   SeedLink v4 menggunakan pemilihan
-   stream sesuai pola stream server.
-
-   Karena format stream dari /streams/json
-   dapat langsung digunakan sebagai referensi,
-   perintah SELECT dikirim berdasarkan
-   stream yang dipilih.
-*/
-
-
-setTimeout(
-
-function(){
-
-
-try{
-
-
-/* JIKA FORMAT FDSN */
-
-
-let commandStream =
-selected;
-
-
-/* Hapus suffix format */
-
-
-commandStream =
-commandStream
-.replace(
-"/MSEED3",
-""
-)
-.replace(
-"/MSEED",
-""
-);
-
-
-/* Hapus FDSN: */
-
-commandStream =
-commandStream.replace(
-"FDSN:",
-""
-);
-
-
-/*
-   Untuk SeedLink v3 diperlukan
-   STATION + SELECT.
-
-   Jika format stream:
-   NET_STA_LOC_B_S_SS
-
-   Contoh:
-   IU_ANMO_00_B_H_Z
-*/
-
-
-const parts =
-
-commandStream.split(
-"_"
-);
-
-
-if(
-
-parts.length >= 5
-
-){
-
-
-const network =
-parts[0];
-
-
-const station =
-parts[1];
-
-
-const location =
-parts[2];
-
-
-const band =
-parts[3];
-
-
-const source =
-parts[4];
-
-
-const subsource =
-parts[5] || "";
-
-
-/*
-   SELECT SeedLink v3 channel
-
-   Contoh channel:
-   00BHZ
-*/
-
-
-const channel =
-
-location +
-
-band +
-
-source +
-
-subsource;
-
-
-/*
-   STATION
-
-   Format:
-   STATION station network
-*/
-
-
-socket.send(
-
-"STATION " +
-
-station +
-
-" " +
-
-network
-
-);
-
-
-/*
-   SELECT
-*/
-
-
-socket.send(
-
-"SELECT " +
-
-channel +
-
-".D"
-
-);
-
-
-/*
-   DATA realtime
-*/
-
-
-socket.send(
-"DATA"
-);
-
-
-/*
-   END handshake
-*/
-
-
-socket.send(
-"END"
-);
-
-
-info.innerHTML +=
 
 "<br><br>"
 
 +
 
-"📡 Perintah stream dikirim:<br>"
+"📡 Meminta informasi "
 
 +
 
-"STATION " +
-
-station +
-
-" " +
-
-network +
-
-"<br>"
-
-+
-
-"SELECT " +
-
-channel;
-
-
-}
-
-
-else{
+"stream dari server...";
 
 
 /*
-   FALLBACK:
+Minta info stream dulu
 
-   Kirim INFO STREAMS
-   agar server memberi informasi
+SeedLink command
+harus dikirim
+sebagai WebSocket frame
 */
 
 
 socket.send(
+
 "INFO STREAMS"
-);
-
-
-info.innerHTML +=
-
-"<br><br>"
-
-+
-
-"⚠️ Format stream tidak "
-
-+
-
-"cocok untuk parser otomatis. "
-
-+
-
-"Meminta INFO STREAMS.";
-
-
-}
-
-
-}
-
-catch(error){
-
-console.error(error);
-
-}
-
-
-},
-
-1000
 
 );
 
@@ -1575,268 +1000,73 @@ console.error(error);
 };
 
 
-
-/* ==========================================
-   DATA MASUK
-========================================== */
-
-
 socket.onmessage =
-async function(event){
+function(event){
 
 
-/* PESAN TEXT */
-
-
-if(
-
-typeof event.data ===
-"string"
-
-){
+if(typeof event.data ===
+"string"){
 
 
 console.log(
-"SEEDLINK TEXT:",
+
+"SEEDLINK:",
+
 event.data
+
 );
+
+
+info.innerHTML =
+
+"RESPONS SERVER:<br><br>"
+
++
+
+event.data
+.substring(0,1000);
 
 
 return;
 
-}
 
+}
 
 
 /* DATA BINARY */
 
 
-if(
-
-event.data instanceof
-ArrayBuffer
-
-){
+if(event.data instanceof ArrayBuffer){
 
 
 packetCount++;
 
 
-packetText.innerText =
+document
+.getElementById("packets")
+.innerText =
 packetCount;
 
 
-dataStatus.innerText =
-"DATA DITERIMA";
-
-
-try{
-
-
-const arrayBuffer =
-event.data;
-
-
-/* ======================================
-   COBA PARSE MINISEED
-
-   Nama fungsi dapat berbeda tergantung
-   build Seisplotjs.
-====================================== */
-
-
-let records = null;
-
-
-/*
-   Coba parser miniseed
-*/
-
-
-if(
-
-sp.miniseed
-
-&&
-
-sp.miniseed.parseDataRecords
-
-){
-
-records =
-
-sp.miniseed
-.parseDataRecords(
-arrayBuffer
-);
-
-}
-
-
-else if(
-
-sp.mseed3
-
-&&
-
-sp.mseed3.parseDataRecords
-
-){
-
-records =
-
-sp.mseed3
-.parseDataRecords(
-arrayBuffer
-);
-
-}
-
-
-console.log(
-"MINISEED RECORDS:",
-records
-);
-
-
-/* ======================================
-   AMBIL SAMPLE
-====================================== */
-
-
-if(records){
-
-
-for(
-
-const record of records
-
-){
-
-
-let samples =
-null;
-
-
-/* Berbagai kemungkinan API */
-
-
-if(
-
-record.decompress
-
-){
-
-samples =
-record.decompress();
-
-}
-
-
-else if(
-
-record.data
-
-){
-
-samples =
-record.data;
-
-}
-
-
-else if(
-
-record.samples
-
-){
-
-samples =
-record.samples;
-
-}
-
-
-if(samples){
-
-addSamples(
-samples
-);
-
-}
-
-}
+document
+.getElementById("data")
+.innerText =
+"DATA BINARY";
 
 
 setStatus(
 
-"🟢 WAVEFORM ASLI MASUK",
+"🟢 DATA MASUK",
 
 "live"
 
 );
 
 
-dataStatus.innerText =
-"WAVEFORM LIVE";
-
-
-}
-
-else{
-
-
-dataStatus.innerText =
-"BINARY DITERIMA";
-
-
-}
-
-
-}
-
-catch(error){
-
-
-console.error(
-"PARSE ERROR:",
-error
-);
-
-
-dataStatus.innerText =
-"DATA BINARY";
-
-
-info.innerHTML =
-
-"📦 Paket miniSEED asli diterima, "
-
-+
-
-"tetapi parser perlu menyesuaikan "
-
-+
-
-"format packet SeedLink server.<br><br>"
-
-+
-
-"Error parser: "
-
-+
-
-error.message;
-
-
-}
-
-
 }
 
 
 };
-
 
 
 socket.onerror =
@@ -1844,10 +1074,6 @@ function(error){
 
 
 console.error(error);
-
-
-connectionText.innerText =
-"ERROR";
 
 
 setStatus(
@@ -1859,21 +1085,28 @@ setStatus(
 );
 
 
-};
+document
+.getElementById("connection")
+.innerText =
+"ERROR";
 
+
+};
 
 
 socket.onclose =
 function(){
 
 
-connectionText.innerText =
+document
+.getElementById("connection")
+.innerText =
 "OFFLINE";
 
 
 setStatus(
 
-"🔴 KONEKSI TERPUTUS",
+"🔴 TERPUTUS",
 
 "error"
 
@@ -1893,7 +1126,7 @@ console.error(error);
 
 setStatus(
 
-"🔴 GAGAL MEMBUAT KONEKSI",
+"🔴 GAGAL KONEKSI",
 
 "error"
 
@@ -1903,65 +1136,141 @@ setStatus(
 }
 
 
-};
+}
 
 
+/* =========================
+
+DISCONNECT
+
+========================= */
 
 
-/* ==========================================
-   PUTUS KONEKSI
-========================================== */
-
-
-window.disconnectStream =
-function(){
+function disconnectStream(){
 
 
 if(socket){
 
 
-try{
-
-
 socket.close();
 
 
-}
-
-catch(error){
-
-
-console.log(error);
-
-}
-
-
-socket =
-null;
+socket = null;
 
 
 }
 
 
-connectionText.innerText =
+document
+.getElementById("connection")
+.innerText =
 "OFFLINE";
 
 
-dataStatus.innerText =
-"BERHENTI";
+}
 
 
-};
+/* =========================
+
+CANVAS
+
+========================= */
 
 
+const canvas =
+
+document.getElementById(
+"graph"
+);
 
 
-/* ==========================================
-   LOAD AWAL
-========================================== */
+const ctx =
+
+canvas.getContext(
+"2d"
+);
 
 
-loadStreams();
+function resize(){
+
+
+canvas.width =
+canvas.offsetWidth;
+
+
+canvas.height =
+canvas.offsetHeight;
+
+
+}
+
+
+resize();
+
+
+window.addEventListener(
+
+"resize",
+
+resize
+
+);
+
+
+function draw(){
+
+
+ctx.clearRect(
+
+0,
+0,
+canvas.width,
+canvas.height
+
+);
+
+
+/* GARIS TENGAH */
+
+
+ctx.beginPath();
+
+
+ctx.strokeStyle =
+
+"rgba(255,255,255,.1)";
+
+
+ctx.moveTo(
+
+0,
+
+canvas.height/2
+
+);
+
+
+ctx.lineTo(
+
+canvas.width,
+
+canvas.height/2
+
+);
+
+
+ctx.stroke();
+
+
+requestAnimationFrame(
+draw
+);
+
+
+}
+
+
+draw();
 
 
 </script>
