@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Status Menu</title>
+<style>
+body{font-family:sans-serif;background:#f4f6f8;padding:20px}
+.container{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+h2{text-align:center}
+.item{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:10px;border:1px solid #ddd;border-radius:8px}
+select{padding:5px}
+button{margin-top:15px;width:100%;padding:10px;background:#27ae60;color:white;border:none;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>⚙️ Kelola Status Menu</h2>
+<div id="list"></div>
+<button onclick="saveStatus()">💾 Simpan Status</button>
+</div><script>
+const menuList=[
+  'Roti Gandum (Tawar)',
+  'Roti Toast (Beef)',
+  'Roti Toast (Ayam)',
+  'Pizza Sosis Sapi',
+  'Pizza Sosis Ayam',
+  'Pizza Smoked Beef',
+  'Pizza Pepperoni',
+  'Pizza Ikan Tuna',
+  'Pizza Cheese Lovers',
+  'Pizza Mini Sosis Sapi'
+];
+
+const listDiv=document.getElementById('list');
+let statusData = JSON.parse(localStorage.getItem('menuStatus')) || {};
+
+function render(){
+  listDiv.innerHTML='';
+  menuList.forEach(name=>{
+    const div=document.createElement('div');
+    div.className='item';
+    const select=`
+      <select data-name="${name}">
+        <option value="ready">Ready</option>
+        <option value="habis">Habis</option>
+        <option value="soon">Segera Hadir</option>
+      </select>`;
+    div.innerHTML=`<span>${name}</span>${select}`;
+    listDiv.appendChild(div);
+
+    const sel=div.querySelector('select');
+    if(statusData[name]) sel.value=statusData[name];
+  });
+}
+
+function saveStatus(){
+  const selects=document.querySelectorAll('select');
+  selects.forEach(s=>{
+    statusData[s.dataset.name]=s.value;
+  });
+  localStorage.setItem('menuStatus', JSON.stringify(statusData));
+  alert('Status tersimpan!');
+}
+
+render();
+</script></body>
+</html>
