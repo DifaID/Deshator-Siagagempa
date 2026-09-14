@@ -4,10 +4,9 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>INDONESIA LIVE RADAR V9</title>
+<title>IG.RMN.TMS.TYNP3 | Monitor Gempa Real-Time</title>
 
 <link
 rel="stylesheet"
@@ -16,609 +15,372 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 
 <style>
 
-/* ================================
-   RESET
-================================ */
-
 *{
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
     margin:0;
     padding:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-
-    background:#03090d;
-
-    color:white;
-
-    font-family:
-    Arial,
-    sans-serif;
 }
 
-
-/* ================================
-   HEADER
-================================ */
-
-#header{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:54px;
-
-    z-index:5000;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:
-    space-between;
-
-    padding:
-    0 14px;
-
-    background:
-    rgba(3,12,17,.97);
-
-    border-bottom:
-    1px solid #183b47;
-
+body{
+    font-family:Arial,sans-serif;
+    background:#f1f5f9;
+    color:#263238;
 }
 
+header{
+    background:#ffffff;
+    border-bottom:4px solid #1976d2;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
 
 .logo{
-
-    font-size:12px;
-
+    font-size:26px;
     font-weight:bold;
-
-    color:#61dcff;
-
+    color:#1565c0;
+    letter-spacing:1px;
 }
 
-
-.live{
-
-    font-size:9px;
-
-    font-weight:bold;
-
-    color:#4dff8a;
-
-    animation:
-    blink 1.3s infinite;
-
+.subtitle{
+    color:#78909c;
+    margin-top:7px;
+    font-size:13px;
 }
 
-
-@keyframes blink{
-
-    50%{
-        opacity:.3;
-    }
-
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:15px;
 }
 
-
-/* ================================
-   MAP
-================================ */
-
-#map{
-
-    position:fixed;
-
-    top:54px;
-
-    left:0;
-
-    width:100%;
-
-    bottom:145px;
-
-    background:#071015;
-
-}
-
-
-/* ================================
-   PANEL
-================================ */
-
-.panel{
-
-    position:fixed;
-
-    z-index:4000;
-
-    background:
-    rgba(4,16,23,.92);
-
-    border:
-    1px solid #1b4653;
-
-    border-radius:10px;
-
-    padding:8px;
-
-    backdrop-filter:
-    blur(5px);
-
-    box-shadow:
-    0 3px 15px
-    rgba(0,0,0,.3);
-
-}
-
-
-.panelTitle{
-
-    color:#5edfff;
-
-    font-size:8px;
-
-    font-weight:bold;
-
-    margin-bottom:5px;
-
-}
-
-
-/* ================================
-   SYSTEM
-================================ */
-
-#systemPanel{
-
-    top:63px;
-
-    left:7px;
-
-    font-size:8px;
-
-}
-
-
-/* ================================
-   LOCATION
-================================ */
-
-#locationPanel{
-
-    top:96px;
-
-    left:7px;
-
-    width:155px;
-
-    font-size:8px;
-
-    line-height:1.7;
-
-}
-
-
-/* ================================
-   LEGEND
-================================ */
-
-#legend{
-
-    top:63px;
-
-    right:7px;
-
-    font-size:8px;
-
-    line-height:1.9;
-
-}
-
-
-.legendRow{
-
+.connection{
+    background:#ffffff;
+    padding:14px;
+    border-radius:12px;
     display:flex;
-
+    justify-content:center;
     align-items:center;
-
-    gap:5px;
-
+    gap:10px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
-
 
 .dot{
-
-    width:9px;
-
-    height:9px;
-
+    width:12px;
+    height:12px;
     border-radius:50%;
-
+    background:#43a047;
+    animation:pulseConnection 1.5s infinite;
 }
 
-
-.redDot{
-    background:#ff3030;
+.dot.offline{
+    background:#d32f2f;
 }
 
-.orangeDot{
-    background:#ff8a24;
-}
-
-.yellowDot{
-    background:#ffe03b;
-}
-
-.greenDot{
-    background:#41d67a;
-}
-
-.userDot{
-    background:#258cff;
-}
-
-
-/* ================================
-   STATS
-================================ */
-
-#statsPanel{
-
-    position:fixed;
-
-    bottom:145px;
-
-    left:7px;
-
-    z-index:4000;
-
-    display:flex;
-
-    gap:6px;
-
-    font-size:8px;
-
-}
-
-
-.miniStat{
-
-    background:
-    rgba(4,16,23,.9);
-
-    border:
-    1px solid #174450;
-
-    border-radius:8px;
-
-    padding:6px;
-
-    min-width:58px;
-
-    text-align:center;
-
-}
-
-
-.miniLabel{
-
-    color:#778990;
-
-    font-size:7px;
-
-}
-
-
-.miniValue{
-
-    margin-top:3px;
-
-    color:#5bdfff;
-
-    font-weight:bold;
-
-    font-size:10px;
-
-}
-
-
-/* ================================
-   BOTTOM
-================================ */
-
-#bottom{
-
-    position:fixed;
-
-    bottom:0;
-
-    left:0;
-
-    width:100%;
-
-    height:145px;
-
-    z-index:5000;
-
-    background:
-    rgba(3,12,17,.98);
-
-    border-top:
-    1px solid #183b47;
-
-}
-
-
-#feed{
-
-    width:100%;
-
-    height:100%;
-
-    padding:8px;
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-    white-space:nowrap;
-
-    scrollbar-width:none;
-
-}
-
-
-#feed::-webkit-scrollbar{
-    display:none;
-}
-
-
-.feedCard{
-
-    display:inline-block;
-
-    vertical-align:top;
-
-    width:210px;
-
-    height:118px;
-
-    margin-right:7px;
-
-    padding:9px;
-
-    white-space:normal;
-
-    border-radius:10px;
-
-    background:#081820;
-
-    border:
-    1px solid #184652;
-
-}
-
-
-.feedType{
-
-    font-size:7px;
-
-    color:#7d9198;
-
-}
-
-
-.feedStatus{
-
-    margin-top:4px;
-
-    font-size:8px;
-
-    font-weight:bold;
-
-}
-
-
-.feedMag{
-
-    margin-top:5px;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-}
-
-
-.feedLocation{
-
-    margin-top:5px;
-
-    font-size:8px;
-
-    color:#c2d1d5;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-
-.feedDistance{
-
-    margin-top:5px;
-
-    font-size:8px;
-
-    color:#63dfff;
-
-}
-
-
-/* ================================
-   STATUS COLORS
-================================ */
-
-.statusActive{
-    color:#ff4444;
-}
-
-.statusWarning{
-    color:#ff9c31;
-}
-
-.statusIdle{
-    color:#ffe34d;
-}
-
-.statusOld{
-    color:#51d97f;
-}
-
-
-/* ================================
-   USER MARKER
-================================ */
-
-.userMarker{
-
-    width:20px;
-
-    height:20px;
-
-    border-radius:50%;
-
-    background:#198dff;
-
-    border:
-    3px solid white;
-
-    box-shadow:
-
-    0 0 10px #198dff,
-
-    0 0 20px #198dff;
-
-}
-
-
-/* ================================
-   EARTHQUAKE MARKERS
-================================ */
-
-.eqMarker{
-
-    width:17px;
-
-    height:17px;
-
-    border-radius:50%;
-
-    border:
-    2px solid white;
-
-}
-
-
-.eqRed{
-
-    background:#ff2222;
-
-    box-shadow:
-
-    0 0 8px #ff2222,
-
-    0 0 22px #ff2222;
-
-}
-
-
-.eqOrange{
-
-    background:#ff8a22;
-
-    box-shadow:
-
-    0 0 7px #ff8a22,
-
-    0 0 15px #ff8a22;
-
-}
-
-
-.eqYellow{
-
-    background:#ffe23b;
-
-    box-shadow:
-
-    0 0 6px #ffe23b;
-
-}
-
-
-.eqGreen{
-
-    background:#3ed67a;
-
-    box-shadow:
-
-    0 0 5px #3ed67a;
-
-}
-
-
-/* ================================
-   CANVAS WAVE
-================================ */
-
-#waveCanvas{
-
-    position:fixed;
-
-    top:54px;
-
-    left:0;
-
-    width:100%;
-
-    height:
-    calc(100% - 199px);
-
-    z-index:1000;
-
-    pointer-events:none;
-
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media(max-width:420px){
-
-    #legend{
-        font-size:7px;
+@keyframes pulseConnection{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
     }
 
-    .miniStat{
-        min-width:50px;
+    50%{
+        transform:scale(1.6);
+        opacity:.5;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+button{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    background:#1976d2;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.poster-button{
+    background:#b71c1c;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.alert{
+    background:#fff3e0;
+    color:#e65100;
+    text-align:center;
+    padding:13px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.magnitude{
+    text-align:center;
+    font-size:60px;
+    font-weight:bold;
+    color:#d32f2f;
+    margin:20px;
+}
+
+.data{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.item{
+    background:#f5f7fa;
+    border:1px solid #e1e7ec;
+    padding:15px;
+    border-radius:10px;
+}
+
+.label{
+    color:#78909c;
+    font-size:12px;
+}
+
+.value{
+    margin-top:6px;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.map-title{
+    color:#1565c0;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+#map{
+    height:420px;
+    border-radius:12px;
+}
+
+.pulse-marker{
+    width:30px;
+    height:30px;
+    background:#e53935;
+    border-radius:50%;
+    position:relative;
+}
+
+.pulse-marker:before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#e53935;
+    border-radius:50%;
+    animation:gempaPulse 1.5s infinite;
+}
+
+@keyframes gempaPulse{
+
+    0%{
+        transform:scale(1);
+        opacity:.8;
+    }
+
+    100%{
+        transform:scale(3);
+        opacity:0;
+    }
+
+}
+
+.history-title{
+    font-size:20px;
+    color:#1565c0;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.history{
+    max-height:600px;
+    overflow-y:auto;
+}
+
+.history-item{
+    background:#f5f7fa;
+    border-left:5px solid #1976d2;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.history-mag{
+    font-size:20px;
+    font-weight:bold;
+    color:#d32f2f;
+}
+
+.history-location{
+    margin-top:6px;
+    font-weight:bold;
+}
+
+.history-info{
+    margin-top:5px;
+    font-size:13px;
+    color:#78909c;
+}
+
+.loading{
+    text-align:center;
+    color:#78909c;
+    padding:20px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#78909c;
+    font-size:12px;
+}
+
+/* =========================
+   POSTER GEMPA
+========================= */
+
+.poster-preview{
+    display:flex;
+    justify-content:center;
+    margin-top:10px;
+}
+
+.poster{
+    width:100%;
+    max-width:400px;
+    aspect-ratio:3/4;
+    background:
+    radial-gradient(circle at top,#5a0000,#140000 55%,#050505);
+    color:white;
+    border-radius:20px;
+    overflow:hidden;
+    position:relative;
+    padding:30px;
+    border:2px solid #b71c1c;
+    box-shadow:0 10px 35px rgba(120,0,0,.5);
+}
+
+.poster::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    border:2px solid rgba(255,0,0,.15);
+    border-radius:50%;
+    top:-350px;
+    left:-100px;
+}
+
+.poster-content{
+    position:relative;
+    z-index:2;
+}
+
+.poster-brand{
+    text-align:center;
+    color:#ff5252;
+    font-weight:bold;
+    letter-spacing:2px;
+    font-size:13px;
+}
+
+.poster-alert{
+    margin-top:45px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    color:#ff1744;
+}
+
+.poster-line{
+    height:3px;
+    background:#d50000;
+    margin:18px auto;
+    width:70%;
+}
+
+.poster-mag{
+    text-align:center;
+    font-size:85px;
+    font-weight:bold;
+    color:#ffffff;
+    text-shadow:0 0 25px #ff0000;
+    margin:25px 0;
+}
+
+.poster-box{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,0,0,.3);
+    border-left:5px solid #d50000;
+    padding:15px;
+    border-radius:10px;
+    margin-top:14px;
+}
+
+.poster-label{
+    font-size:11px;
+    color:#ff8a80;
+}
+
+.poster-value{
+    margin-top:6px;
+    font-size:15px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+.poster-footer{
+    position:absolute;
+    bottom:25px;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:10px;
+    color:#9e9e9e;
+}
+
+@media(max-width:650px){
+
+    .data{
+        grid-template-columns:1fr;
+    }
+
+    .magnitude{
+        font-size:48px;
+    }
+
+    #map{
+        height:320px;
+    }
+
+    .logo{
+        font-size:20px;
     }
 
 }
@@ -627,363 +389,416 @@ body{
 
 </head>
 
-
 <body>
 
+<header>
 
-<!-- HEADER -->
-
-<div id="header">
-
-    <div class="logo">
-
-        🇮🇩 INDONESIA LIVE RADAR V9
-
-    </div>
-
-    <div class="live">
-
-        ● LIVE
-
-    </div>
-
+<div class="logo">
+🌏 IG.RMN.TMS.TYNP3
 </div>
 
+<div class="subtitle">
+SISTEM MONITORING GEMPA REAL-TIME INDONESIA
+</div>
+
+</header>
 
 
-<!-- SYSTEM -->
+<div class="container">
+
+
+<div class="connection">
 
 <div
-id="systemPanel"
-class="panel">
-
-    <span id="systemText">
-
-        🟡 Memuat sistem...
-
-    </span>
-
+class="dot"
+id="connectionDot">
 </div>
-
-
-
-<!-- LOCATION -->
 
 <div
-id="locationPanel"
-class="panel">
+id="connectionStatus">
 
-    <div class="panelTitle">
+Menghubungkan ke server...
 
-        📍 LOKASI KAMU
-
-    </div>
-
-    <div id="locationText">
-
-        Mencari GPS...
-
-    </div>
+</div>
 
 </div>
 
 
+<button onclick="aktifkanNotifikasi()">
 
-<!-- LEGEND -->
+🔔 AKTIFKAN NOTIFIKASI GEMPA
+
+</button>
+
+
+<div class="card">
+
+<div class="alert">
+
+🚨 INFORMASI GEMPA TERBARU
+
+</div>
+
 
 <div
-id="legend"
-class="panel">
+class="magnitude"
+id="magnitude">
 
-    <div class="legendRow">
-
-        <span class="dot redDot"></span>
-
-        Aktif
-
-    </div>
-
-    <div class="legendRow">
-
-        <span class="dot orangeDot"></span>
-
-        Mereda
-
-    </div>
-
-    <div class="legendRow">
-
-        <span class="dot yellowDot"></span>
-
-        Selesai
-
-    </div>
-
-    <div class="legendRow">
-
-        <span class="dot greenDot"></span>
-
-        Riwayat
-
-    </div>
-
-    <div class="legendRow">
-
-        <span class="dot userDot"></span>
-
-        Kamu
-
-    </div>
+Memuat...
 
 </div>
 
 
+<div class="data">
 
-<!-- MAP -->
+
+<div class="item">
+
+<div class="label">
+📍 LOKASI GEMPA
+</div>
+
+<div
+class="value"
+id="lokasi">
+-
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="label">
+📏 KEDALAMAN
+</div>
+
+<div
+class="value"
+id="kedalaman">
+-
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="label">
+🕒 WAKTU GEMPA
+</div>
+
+<div
+class="value"
+id="waktu">
+-
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="label">
+🌊 POTENSI TSUNAMI
+</div>
+
+<div
+class="value"
+id="tsunami">
+-
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="label">
+📏 JARAK DARI LOKASI KAMU
+</div>
+
+<div
+class="value"
+id="jarak">
+
+Menunggu GPS...
+
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="label">
+🧭 ARAH GEMPA DARI KAMU
+</div>
+
+<div
+class="value"
+id="arah">
+
+Menunggu GPS...
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================
+     POSTER
+===================== -->
+
+<button
+class="poster-button"
+onclick="simpanPoster()">
+
+🖼️ BUAT & SIMPAN POSTER GEMPA
+
+</button>
+
+
+<div class="card">
+
+<div class="map-title">
+
+🔴 PREVIEW POSTER GEMPA
+
+</div>
+
+
+<div class="poster-preview">
+
+<div
+class="poster"
+id="posterGempa">
+
+
+<div class="poster-content">
+
+
+<div class="poster-brand">
+
+IG.RMN.TMS.TYNP3
+
+</div>
+
+
+<div class="poster-alert">
+
+🚨 INFORMASI GEMPA
+
+</div>
+
+
+<div class="poster-line"></div>
+
+
+<div
+class="poster-mag"
+id="posterMagnitude">
+
+M -
+
+</div>
+
+
+<div class="poster-box">
+
+<div class="poster-label">
+
+📍 LOKASI GEMPA
+
+</div>
+
+<div
+class="poster-value"
+id="posterLokasi">
+
+Memuat...
+
+</div>
+
+</div>
+
+
+<div class="poster-box">
+
+<div class="poster-label">
+
+📏 KEDALAMAN
+
+</div>
+
+<div
+class="poster-value"
+id="posterKedalaman">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="poster-box">
+
+<div class="poster-label">
+
+🕒 WAKTU GEMPA
+
+</div>
+
+<div
+class="poster-value"
+id="posterWaktu">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="poster-box">
+
+<div class="poster-label">
+
+🌊 POTENSI TSUNAMI
+
+</div>
+
+<div
+class="poster-value"
+id="posterTsunami">
+
+-
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="poster-footer">
+
+DATA GEMPA • BMKG
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================
+     PETA
+===================== -->
+
+<div class="card">
+
+<div class="map-title">
+
+🗺️ LOKASI KAMU & GEMPA
+
+</div>
 
 <div id="map"></div>
 
+</div>
 
 
-<!-- WAVE -->
+<!-- =====================
+     RIWAYAT
+===================== -->
 
-<canvas id="waveCanvas"></canvas>
+<div class="card">
 
+<div class="history-title">
 
-
-<!-- STATS -->
-
-<div id="statsPanel">
-
-    <div class="miniStat">
-
-        <div class="miniLabel">
-
-            GEMPA
-
-        </div>
-
-        <div
-        id="eqCount"
-        class="miniValue">
-
-            -
-
-        </div>
-
-    </div>
-
-
-    <div class="miniStat">
-
-        <div class="miniLabel">
-
-            TERBESAR
-
-        </div>
-
-        <div
-        id="largest"
-        class="miniValue">
-
-            -
-
-        </div>
-
-    </div>
-
-
-    <div class="miniStat">
-
-        <div class="miniLabel">
-
-            TERDEKAT
-
-        </div>
-
-        <div
-        id="nearest"
-        class="miniValue">
-
-            -
-
-        </div>
-
-    </div>
-
-
-    <div class="miniStat">
-
-        <div class="miniLabel">
-
-            AKTIF
-
-        </div>
-
-        <div
-        id="activeCount"
-        class="miniValue">
-
-            0
-
-        </div>
-
-    </div>
+📜 15 GEMPA TERBARU
 
 </div>
 
 
+<div
+class="history"
+id="history">
 
-<!-- BOTTOM -->
+<div class="loading">
 
-<div id="bottom">
+Memuat riwayat gempa...
 
-    <div id="feed"></div>
+</div>
+
+</div>
 
 </div>
 
 
+</div>
+
+
+<footer>
+
+<b>
+
+IG.RMN.TMS.TYNP3
+
+</b>
+
+<br><br>
+
+Sistem Monitoring Gempa Real-Time Indonesia
+
+<br>
+
+Data informasi gempa bersumber dari BMKG
+
+</footer>
+
+
+<!-- LIBRARY -->
 
 <script
 src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
 
+<script
+src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
+</script>
+
+
 <script>
 
 
-/* =====================================
-   INDONESIA LIVE RADAR V9
-===================================== */
+/* =========================
+   PETA
+========================= */
 
+const map = L.map('map')
+.setView([-2.5,118],5);
 
-/* =====================================
-   BMKG URL
-===================================== */
-
-const BMKG_AUTO =
-"https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json";
-
-const BMKG_TERKINI =
-"https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json";
-
-const BMKG_DIRASAKAN =
-"https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json";
-
-
-/* =====================================
-   REFRESH
-
-   60 DETIK
-===================================== */
-
-const REFRESH_TIME =
-60000;
-
-
-/* =====================================
-   STATUS TIME
-
-   AKTIF
-   0 - 10 menit
-
-   MEREDA
-   10 - 30 menit
-
-   SELESAI
-   30 - 60 menit
-
-   RIWAYAT
-   > 60 menit
-===================================== */
-
-const ACTIVE_TIME =
-10 * 60 * 1000;
-
-const WARNING_TIME =
-30 * 60 * 1000;
-
-const IDLE_TIME =
-60 * 60 * 1000;
-
-
-/* =====================================
-   MAP
-===================================== */
-
-const map =
-L.map(
-
-"map",
-
-{
-
-preferCanvas:true,
-
-zoomAnimation:false,
-
-fadeAnimation:false,
-
-markerZoomAnimation:false,
-
-inertia:true,
-
-minZoom:4,
-
-maxZoom:11
-
-}
-
-);
-
-
-/* INDONESIA */
-
-map.setView(
-
-[-2.5,118],
-
-5
-
-);
-
-
-/* LIMIT */
-
-map.setMaxBounds(
-
-[
-
-[-15,92],
-
-[12,145]
-
-]
-
-);
-
-
-/* =====================================
-   OPENSTREETMAP
-
-   TANPA API KEY
-===================================== */
 
 L.tileLayer(
 
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
 {
-
 maxZoom:19,
-
-keepBuffer:1,
-
-updateWhenIdle:true,
-
-attribution:
-"© OpenStreetMap"
-
+attribution:'© OpenStreetMap'
 }
 
 )
@@ -991,196 +806,111 @@ attribution:
 .addTo(map);
 
 
-/* =====================================
-   LAYERS
-===================================== */
+let markerGempa = null;
 
-const earthquakeLayer =
-L.layerGroup()
-.addTo(map);
+let markerUser = null;
 
 
-const userLayer =
-L.layerGroup()
-.addTo(map);
-
-
-/* =====================================
-   USER LOCATION
-===================================== */
+/* =========================
+   DATA
+========================= */
 
 let userLat = null;
 
 let userLng = null;
 
-let userAccuracy = null;
+let gempaTerakhir = null;
+
+let gempaLat = null;
+
+let gempaLng = null;
 
 
-/* =====================================
-   DATA
-===================================== */
+/* =========================
+   GPS
+========================= */
 
-let earthquakeStore =
-new Map();
-
-
-let firstLoad =
-true;
+function mulaiGPS(){
 
 
-/* =====================================
-   AUDIO
-===================================== */
+if(!navigator.geolocation){
 
-let audioUnlocked =
-false;
+document
+.getElementById("jarak")
+.innerHTML =
+"GPS tidak didukung";
 
-let audioContext =
-null;
+return;
+
+}
 
 
-/* =====================================
-   STATUS
-===================================== */
+navigator.geolocation.watchPosition(
 
-function setStatus(
+function(position){
 
-text,
 
-color
+userLat =
+position.coords.latitude;
 
-){
 
-const el =
-document.getElementById(
-"systemText"
+userLng =
+position.coords.longitude;
+
+
+/* MARKER USER */
+
+if(markerUser){
+
+map.removeLayer(markerUser);
+
+}
+
+
+markerUser =
+L.marker([userLat,userLng])
+
+.addTo(map)
+
+.bindPopup(
+"📍 <b>LOKASI KAMU</b>"
 );
 
-el.innerText =
-text;
 
-el.style.color =
-color;
-
-}
+updateJarak();
 
 
-/* =====================================
-   PARSE COORDINATE
-===================================== */
+},
 
-function parseCoordinate(
+function(){
 
-coordinates
+document
+.getElementById("jarak")
+.innerHTML =
+"Izin lokasi diperlukan";
 
-){
+},
 
-if(!coordinates)
-return null;
+{
 
+enableHighAccuracy:true,
 
-const parts =
-String(coordinates)
-.split(",");
+maximumAge:5000,
 
-
-if(parts.length < 2)
-return null;
-
-
-const lat =
-parseFloat(parts[0]);
-
-const lng =
-parseFloat(parts[1]);
-
-
-if(
-isNaN(lat)
-||
-isNaN(lng)
-)
-return null;
-
-
-return{
-
-lat:lat,
-
-lng:lng
-
-};
+timeout:10000
 
 }
 
-
-/* =====================================
-   PARSE DATE
-===================================== */
-
-function parseEarthquakeTime(
-
-dateTime,
-
-tanggal,
-
-jam
-
-){
-
-/*
-
-Prioritas DateTime ISO
-dari BMKG
-
-*/
-
-if(dateTime){
-
-const time =
-new Date(dateTime);
-
-if(!isNaN(time))
-return time.getTime();
-
-}
-
-
-/*
-
-Fallback
-
-*/
-
-if(tanggal && jam){
-
-const parsed =
-Date.parse(
-tanggal + " " + jam
 );
 
-if(!isNaN(parsed))
-return parsed;
-
 }
 
 
-/*
+/* =========================
+   HITUNG JARAK
+========================= */
 
-Jika gagal
-
-*/
-
-return Date.now();
-
-}
-
-
-/* =====================================
-   DISTANCE
-===================================== */
-
-function distanceKm(
+function hitungJarak(
 
 lat1,
 lon1,
@@ -1189,57 +919,39 @@ lon2
 
 ){
 
-const R =
-6371;
+const R = 6371;
 
 
 const dLat =
-(lat2-lat1)
-*
+(lat2-lat1) *
 Math.PI/180;
 
 
 const dLon =
-(lon2-lon1)
-*
+(lon2-lon1) *
 Math.PI/180;
 
 
 const a =
 
-Math.sin(
-dLat/2
-)
-
-*
-
-Math.sin(
-dLat/2
-)
+Math.sin(dLat/2) *
+Math.sin(dLat/2)
 
 +
 
-Math.cos(
-lat1*Math.PI/180
-)
+Math.cos(lat1*Math.PI/180)
 
 *
 
-Math.cos(
-lat2*Math.PI/180
-)
+Math.cos(lat2*Math.PI/180)
 
 *
 
-Math.sin(
-dLon/2
-)
+Math.sin(dLon/2)
 
 *
 
-Math.sin(
-dLon/2
-);
+Math.sin(dLon/2);
 
 
 const c =
@@ -1258,11 +970,11 @@ return R*c;
 }
 
 
-/* =====================================
-   DIRECTION
-===================================== */
+/* =========================
+   ARAH
+========================= */
 
-function direction(
+function hitungArah(
 
 lat1,
 lon1,
@@ -1271,72 +983,52 @@ lon2
 
 ){
 
+const dLon =
+(lon2-lon1) *
+Math.PI/180;
+
+
 const y =
 
-Math.sin(
-
-(lon2-lon1)
-*
-Math.PI/180
-
-)
+Math.sin(dLon)
 
 *
 
-Math.cos(
-lat2*Math.PI/180
-);
+Math.cos(lat2*Math.PI/180);
 
 
 const x =
 
-Math.cos(
-lat1*Math.PI/180
-)
+Math.cos(lat1*Math.PI/180)
 
 *
 
-Math.sin(
-lat2*Math.PI/180
-)
+Math.sin(lat2*Math.PI/180)
 
 -
 
-Math.sin(
-lat1*Math.PI/180
-)
+Math.sin(lat1*Math.PI/180)
 
 *
 
-Math.cos(
-lat2*Math.PI/180
-)
+Math.cos(lat2*Math.PI/180)
 
 *
 
-Math.cos(
-
-(lon2-lon1)
-*
-Math.PI/180
-
-);
+Math.cos(dLon);
 
 
-let angle =
-
+let bearing =
 Math.atan2(y,x)
 *
 180/Math.PI;
 
 
-angle =
-(angle+360)%360;
+bearing =
+(bearing+360)%360;
 
 
-const dirs =
-
-[
+const arah = [
 
 "Utara",
 
@@ -1357,1966 +1049,618 @@ const dirs =
 ];
 
 
-return dirs[
-Math.round(angle/45)%8
+return arah[
+Math.round(bearing/45)%8
 ];
 
 }
 
 
-/* =====================================
-   ID GEMPA
-===================================== */
+/* =========================
+   UPDATE JARAK
+========================= */
 
-function earthquakeID(g){
+function updateJarak(){
 
-return(
-
-g.DateTime ||
-""
-
-)
-
-+
-
-"_"
-
-+
-
-(
-
-g.Coordinates ||
-""
-
-)
-
-+
-
-"_"
-
-+
-
-(
-
-g.Magnitude ||
-""
-
-);
-
-}
-
-
-/* =====================================
-   GET STATUS
-
-   BERDASARKAN WAKTU GEMPA
-===================================== */
-
-function getEarthquakeStatus(
-
-time
-
+if(
+userLat === null ||
+gempaLat === null
 ){
-
-const now =
-Date.now();
-
-const age =
-now - time;
-
-
-/*
-
-GEMPA TERBARU
-
-*/
-
-if(age <= ACTIVE_TIME){
-
-return{
-
-name:"AKTIF",
-
-className:"statusActive",
-
-markerClass:"eqRed",
-
-color:"#ff3030",
-
-wave:true,
-
-speed:1.8
-
-};
-
-}
-
-
-/*
-
-MEREDA
-
-*/
-
-if(age <= WARNING_TIME){
-
-return{
-
-name:"MEREDA",
-
-className:"statusWarning",
-
-markerClass:"eqOrange",
-
-color:"#ff8a24",
-
-wave:true,
-
-speed:.8
-
-};
-
-}
-
-
-/*
-
-SELESAI
-
-*/
-
-if(age <= IDLE_TIME){
-
-return{
-
-name:"SELESAI",
-
-className:"statusIdle",
-
-markerClass:"eqYellow",
-
-color:"#ffe03b",
-
-wave:false,
-
-speed:0
-
-};
-
-}
-
-
-/*
-
-RIWAYAT
-
-*/
-
-return{
-
-name:"RIWAYAT",
-
-className:"statusOld",
-
-markerClass:"eqGreen",
-
-color:"#41d67a",
-
-wave:false,
-
-speed:0
-
-};
-
-}
-
-
-/* =====================================
-   GPS
-===================================== */
-
-function getLocation(){
-
-if(!navigator.geolocation){
-
-document.getElementById(
-"locationText"
-).innerHTML =
-
-"❌ GPS tidak didukung";
 
 return;
 
 }
 
 
-navigator.geolocation
-.getCurrentPosition(
-
-position => {
-
-
-userLat =
-position.coords.latitude;
-
-userLng =
-position.coords.longitude;
-
-userAccuracy =
-position.coords.accuracy;
-
-
-showUser();
-
-
-},
-
-error => {
-
-
-document.getElementById(
-"locationText"
-).innerHTML =
-
-"⚠️ Izinkan GPS";
-
-},
-
-{
-
-enableHighAccuracy:true,
-
-timeout:10000,
-
-maximumAge:300000
-
-}
-
-);
-
-}
-
-
-/* =====================================
-   SHOW USER
-===================================== */
-
-function showUser(){
-
-userLayer.clearLayers();
-
-
-const marker =
-L.marker(
-
-[
+const jarak =
+hitungJarak(
 
 userLat,
-
-userLng
-
-],
-
-{
-
-icon:
-
-L.divIcon(
-
-{
-
-className:"",
-
-html:
-
-'<div class="userMarker"></div>',
-
-iconSize:
-[20,20],
-
-iconAnchor:
-[10,10]
-
-}
-
-)
-
-}
+userLng,
+gempaLat,
+gempaLng
 
 );
 
 
-marker.bindPopup(
-
-"<b>📍 LOKASI KAMU</b><br><br>" +
-
-"Latitude: " +
-
-userLat.toFixed(5)
-
-+
-
-"<br>" +
-
-"Longitude: " +
-
-userLng.toFixed(5)
-
-+
-
-"<br>" +
-
-"Akurasi: ±" +
-
-Math.round(userAccuracy)
-
-+
-
-" meter"
-
-);
-
-
-marker.addTo(
-userLayer
-);
-
-
-L.circle(
-
-[
+const arah =
+hitungArah(
 
 userLat,
+userLng,
+gempaLat,
+gempaLng
 
-userLng
-
-],
-
-{
-
-radius:
-
-Math.min(
-userAccuracy,
-500
-),
-
-color:"#258cff",
-
-weight:1,
-
-opacity:.5,
-
-fillOpacity:.05
-
-}
-
-)
-
-.addTo(
-userLayer
 );
 
 
-document.getElementById(
-"locationText"
-).innerHTML =
+document
+.getElementById("jarak")
+.innerHTML =
+jarak.toFixed(1) +
+" KM";
 
-"🟢 GPS Aktif<br>" +
 
-"🎯 Akurasi ±" +
-
-Math.round(userAccuracy)
-
-+
-
-" meter";
+document
+.getElementById("arah")
+.innerHTML =
+arah;
 
 }
 
 
-/* =====================================
-   LOAD GEMPA
-===================================== */
+/* =========================
+   NOTIFIKASI
+========================= */
 
-async function loadEarthquakes(){
+function aktifkanNotifikasi(){
+
+if(!("Notification" in window)){
+
+alert(
+"Browser tidak mendukung notifikasi"
+);
+
+return;
+
+}
+
+
+Notification
+.requestPermission()
+
+.then(function(permission){
+
+if(permission === "granted"){
+
+new Notification(
+
+"IG.RMN.TMS.TYNP3 Aktif",
+
+{
+
+body:
+"Notifikasi gempa berhasil diaktifkan 🚨"
+
+}
+
+);
+
+}
+
+});
+
+}
+
+
+/* =========================
+   ALARM
+========================= */
+
+function bunyiAlarm(){
+
+const audio =
+new Audio(
+
+"https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
+
+);
+
+
+audio.play()
+.catch(function(){
+
+console.log(
+"Audio membutuhkan interaksi pengguna"
+);
+
+});
+
+}
+
+
+/* =========================
+   KONEKSI
+========================= */
+
+function connectionOnline(){
+
+document
+.getElementById(
+"connectionStatus"
+)
+.innerHTML =
+"🟢 Terhubung • Memantau Data Gempa";
+
+
+document
+.getElementById(
+"connectionDot"
+)
+.classList
+.remove("offline");
+
+}
+
+
+function connectionOffline(){
+
+document
+.getElementById(
+"connectionStatus"
+)
+.innerHTML =
+"🔴 Koneksi Server Bermasalah";
+
+
+document
+.getElementById(
+"connectionDot"
+)
+.classList
+.add("offline");
+
+}
+
+
+/* =========================
+   AMBIL GEMPA
+========================= */
+
+async function ambilGempa(){
 
 try{
 
 
-setStatus(
+const response =
+await fetch(
 
-"🟡 Mengambil data BMKG...",
-
-"#ffd64c"
-
-);
-
-
-const results =
-await Promise.allSettled(
-
-[
-
-fetch(
-BMKG_AUTO,
-{
-cache:"no-store"
-}
-),
-
-fetch(
-BMKG_TERKINI,
-{
-cache:"no-store"
-}
-),
-
-fetch(
-BMKG_DIRASAKAN,
-{
-cache:"no-store"
-}
-)
-
-]
+"https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json"
 
 );
 
 
-let earthquakes =
-[];
+const json =
+await response.json();
 
-
-/* AUTO GEMPA */
-
-if(
-results[0].status ===
-"fulfilled"
-){
 
 const data =
-await results[0]
-.value
-.json();
+json.Infogempa.gempa;
 
 
-if(
-data?.Infogempa?.gempa
-){
+connectionOnline();
 
-earthquakes.push({
 
-...data.Infogempa.gempa,
+/* WEBSITE */
 
-type:"TERBARU"
+document
+.getElementById("magnitude")
+.innerHTML =
+"M " +
+data.Magnitude;
 
-});
 
-}
+document
+.getElementById("lokasi")
+.innerHTML =
+data.Wilayah;
 
-}
 
+document
+.getElementById("kedalaman")
+.innerHTML =
+data.Kedalaman;
 
-/* GEMPA TERKINI */
 
-if(
-results[1].status ===
-"fulfilled"
-){
+document
+.getElementById("waktu")
+.innerHTML =
+data.Tanggal +
+"<br>" +
+data.Jam;
 
-const data =
-await results[1]
-.value
-.json();
 
+document
+.getElementById("tsunami")
+.innerHTML =
+data.Potensi;
 
-const list =
-data?.Infogempa?.gempa
-||
-[];
 
+/* POSTER */
 
-list.forEach(
+document
+.getElementById("posterMagnitude")
+.innerHTML =
+"M " +
+data.Magnitude;
 
-g => {
 
-earthquakes.push({
+document
+.getElementById("posterLokasi")
+.innerHTML =
+data.Wilayah;
 
-...g,
 
-type:"M5+"
+document
+.getElementById("posterKedalaman")
+.innerHTML =
+data.Kedalaman;
 
-});
 
-}
+document
+.getElementById("posterWaktu")
+.innerHTML =
+data.Tanggal +
+"<br>" +
+data.Jam;
 
-);
 
-}
+document
+.getElementById("posterTsunami")
+.innerHTML =
+data.Potensi;
 
 
-/* GEMPA DIRASAKAN */
+/* ID GEMPA */
 
-if(
-results[2].status ===
-"fulfilled"
-){
+const idGempa =
 
-const data =
-await results[2]
-.value
-.json();
+data.Tanggal +
 
+data.Jam +
 
-const list =
-data?.Infogempa?.gempa
-||
-[];
-
-
-list.forEach(
-
-g => {
-
-earthquakes.push({
-
-...g,
-
-type:"DIRASAKAN"
-
-});
-
-}
-
-);
-
-}
-
-
-/* =====================================
-   HAPUS DUPLIKAT
-===================================== */
-
-const unique =
-new Map();
-
-
-earthquakes.forEach(
-
-g => {
-
-const id =
-earthquakeID(g);
-
-
-if(
-!unique.has(id)
-){
-
-unique.set(
-id,
-g
-);
-
-}
-
-}
-
-);
-
-
-earthquakes =
-Array.from(
-unique.values()
-);
-
-
-/* =====================================
-   URUTKAN TERBARU
-===================================== */
-
-earthquakes.sort(
-
-(a,b)=>{
-
-const timeA =
-parseEarthquakeTime(
-
-a.DateTime,
-
-a.Tanggal,
-
-a.Jam
-
-);
-
-
-const timeB =
-parseEarthquakeTime(
-
-b.DateTime,
-
-b.Tanggal,
-
-b.Jam
-
-);
-
-
-return timeB-timeA;
-
-}
-
-);
-
-
-/* MAX DATA */
-
-earthquakes =
-earthquakes.slice(
-0,
-30
-);
-
-
-/* =====================================
-   SIMPAN DATA BARU
-===================================== */
-
-earthquakes.forEach(
-
-g => {
-
-const id =
-earthquakeID(g);
-
-
-if(
-!earthquakeStore.has(id)
-){
-
-earthquakeStore.set(
-
-id,
-
-{
-
-data:g,
-
-detectedAt:
-Date.now()
-
-}
-
-);
+data.Coordinates;
 
 
 /* GEMPA BARU */
 
-if(!firstLoad){
+if(
 
-playSound();
+gempaTerakhir !== null
+
+&&
+
+gempaTerakhir !== idGempa
+
+){
+
+bunyiAlarm();
+
+
+if(
+
+Notification.permission ===
+"granted"
+
+){
+
+new Notification(
+
+"🚨 GEMPA BARU!",
+
+{
+
+body:
+
+"M " +
+data.Magnitude +
+
+" • " +
+
+data.Wilayah
+
+}
+
+);
 
 }
 
 }
 
-}
+
+gempaTerakhir =
+idGempa;
 
 
-/* =====================================
-   RENDER
-===================================== */
+/* KOORDINAT */
 
-renderEarthquakes(
-earthquakes
+const koordinat =
+data.Coordinates.split(",");
+
+
+gempaLat =
+parseFloat(
+koordinat[0]
 );
 
 
-setStatus(
-
-"🟢 BMKG LIVE • " +
-
-earthquakes.length +
-
-" GEMPA",
-
-"#5cff96"
-
+gempaLng =
+parseFloat(
+koordinat[1]
 );
 
 
-firstLoad =
-false;
+updateJarak();
+
+
+/* MARKER GEMPA */
+
+if(markerGempa){
+
+map.removeLayer(
+markerGempa
+);
+
+}
+
+
+const iconGempa =
+L.divIcon({
+
+className:
+'pulse-marker',
+
+iconSize:
+[30,30]
+
+});
+
+
+markerGempa =
+L.marker(
+
+[gempaLat,gempaLng],
+
+{
+
+icon:iconGempa
+
+}
+
+)
+
+.addTo(map)
+
+.bindPopup(
+
+"<b>🚨 GEMPA TERBARU</b>" +
+
+"<br><br>" +
+
+"Magnitudo: M " +
+
+data.Magnitude +
+
+"<br><br>" +
+
+"Lokasi: " +
+
+data.Wilayah
+
+);
 
 
 }
 
 catch(error){
 
-
 console.log(error);
 
-
-setStatus(
-
-"🔴 Gagal mengambil BMKG",
-
-"#ff5555"
-
-);
+connectionOffline();
 
 }
 
 }
 
 
-/* =====================================
-   RENDER GEMPA
-===================================== */
-
-function renderEarthquakes(
-
-earthquakes
-
-){
-
-earthquakeLayer.clearLayers();
-
-
-const feed =
-document.getElementById(
-"feed"
-);
-
-
-feed.innerHTML =
-"";
-
-
-let largest =
-0;
-
-
-let nearest =
-Infinity;
-
-
-let activeTotal =
-0;
-
-
-/* LOOP */
-
-earthquakes.forEach(
-
-g => {
-
-
-const coords =
-parseCoordinate(
-g.Coordinates
-);
-
-
-if(!coords)
-return;
-
-
-/* MAG */
-
-const mag =
-parseFloat(
-g.Magnitude
-)
-||
-0;
-
-
-/* LARGEST */
-
-largest =
-Math.max(
-largest,
-mag
-);
-
-
-/* TIME */
-
-const earthquakeTime =
-parseEarthquakeTime(
-
-g.DateTime,
-
-g.Tanggal,
-
-g.Jam
-
-);
-
-
-/* STATUS */
-
-const status =
-getEarthquakeStatus(
-earthquakeTime
-);
-
-
-/* ACTIVE COUNT */
-
-if(
-status.name ===
-"AKTIF"
-){
-
-activeTotal++;
-
-}
-
-
-/* DISTANCE */
-
-let distance =
-null;
-
-let dir =
-"";
-
-
-if(
-userLat !== null
-&&
-userLng !== null
-){
-
-distance =
-distanceKm(
-
-userLat,
-
-userLng,
-
-coords.lat,
-
-coords.lng
-
-);
-
-
-dir =
-direction(
-
-userLat,
-
-userLng,
-
-coords.lat,
-
-coords.lng
-
-);
-
-
-nearest =
-Math.min(
-nearest,
-distance
-);
-
-}
-
-
-/* =====================================
-   MARKER
-===================================== */
-
-const marker =
-L.marker(
-
-[
-
-coords.lat,
-
-coords.lng
-
-],
-
-{
-
-icon:
-
-L.divIcon(
-
-{
-
-className:"",
-
-html:
-
-'<div class="eqMarker ' +
-
-status.markerClass +
-
-'"></div>',
-
-iconSize:
-[17,17],
-
-iconAnchor:
-[8,8]
-
-}
-
-)
-
-}
-
-);
-
-
-/* POPUP */
-
-marker.bindPopup(
-
-"<b>📡 GEMPA BMKG</b><br><br>" +
-
-"🔴 Status: <b style='color:" +
-
-status.color +
-
-"'>" +
-
-status.name +
-
-"</b><br><br>" +
-
-"📍 " +
-
-(
-g.Wilayah ||
-"Indonesia"
-)
-
-+
-
-"<br><br>" +
-
-"📊 Magnitudo: M " +
-
-(
-g.Magnitude ||
-"-"
-)
-
-+
-
-"<br>" +
-
-"⬇ Kedalaman: " +
-
-(
-g.Kedalaman ||
-"-"
-)
-
-+
-
-"<br>" +
-
-"🕒 " +
-
-(
-g.Tanggal ||
-""
-)
-
-+
-
-" " +
-
-(
-g.Jam ||
-""
-)
-
-+
-
-"<br>" +
-
-"📏 Jarak: " +
-
-(
-
-distance !== null
-
-?
-
-Math.round(
-distance
-)
-
-+
-
-" km"
-
-:
-
-"GPS belum aktif"
-
-)
-
-+
-
-"<br>" +
-
-"🧭 Arah: " +
-
-(
-dir ||
-"-"
-)
-
-+
-
-"<br>" +
-
-"⚠️ " +
-
-(
-g.Potensi ||
-g.Dirasakan ||
-"-"
-)
-
-);
-
-
-marker.addTo(
-earthquakeLayer
-);
-
-
-/* =====================================
-   FEED
-===================================== */
-
-const card =
-document.createElement(
-"div"
-);
-
-
-card.className =
-"feedCard";
-
-
-card.innerHTML =
-
-'<div class="feedType">' +
-
-'📡 BMKG • ' +
-
-(
-g.type ||
-'GEMPA'
-)
-
-+
-
-'</div>' +
-
-
-'<div class="feedStatus ' +
-
-status.className +
-
-'">● ' +
-
-status.name +
-
-'</div>' +
-
-
-'<div class="feedMag" style="color:' +
-
-status.color +
-
-'">' +
-
-'M ' +
-
-(
-g.Magnitude ||
-'-'
-)
-
-+
-
-'</div>' +
-
-
-'<div class="feedLocation">' +
-
-'📍 ' +
-
-(
-g.Wilayah ||
-'Indonesia'
-)
-
-+
-
-'</div>' +
-
-
-'<div class="feedDistance">' +
-
-(
-
-distance !== null
-
-?
-
-'📏 ' +
-
-Math.round(
-distance
-)
-
-+
-
-' km • ' +
-
-dir
-
-:
-
-'📍 GPS belum aktif'
-
-)
-
-+
-
-'</div>';
-
-
-feed.appendChild(
-card
-);
-
-
-}
-
-
-);
-
-
-/* =====================================
-   STATS
-===================================== */
-
-document.getElementById(
-"eqCount"
-).innerText =
-
-earthquakes.length;
-
-
-document.getElementById(
-"largest"
-).innerText =
-
-largest
-
-?
-
-"M " + largest
-
-:
-
-"-";
-
-
-document.getElementById(
-"nearest"
-).innerText =
-
-nearest !== Infinity
-
-?
-
-Math.round(
-nearest
-)
-
-+
-
-" km"
-
-:
-
-"-";
-
-
-document.getElementById(
-"activeCount"
-).innerText =
-
-activeTotal;
-
-
-}
-
-
-/* =====================================
-   WAVE CANVAS
-===================================== */
-
-const canvas =
-document.getElementById(
-"waveCanvas"
-);
-
-
-const ctx =
-canvas.getContext(
-"2d"
-);
-
-
-/* =====================================
-   RESIZE
-===================================== */
-
-function resizeCanvas(){
-
-const rect =
-canvas.getBoundingClientRect();
-
-
-const ratio =
-Math.min(
-
-window.devicePixelRatio ||
-1,
-
-1.5
-
-);
-
-
-canvas.width =
-rect.width *
-ratio;
-
-
-canvas.height =
-rect.height *
-ratio;
-
-
-ctx.setTransform(
-
-ratio,
-
-0,
-
-0,
-
-ratio,
-
-0,
-
-0
-
-);
-
-}
-
-
-resizeCanvas();
-
-
-window.addEventListener(
-
-"resize",
-
-resizeCanvas
-
-);
-
-
-/* =====================================
-   WAVE OBJECT
-===================================== */
-
-let wavePhase =
-0;
-
-
-/* =====================================
-   DRAW WAVES
-===================================== */
-
-function drawWaves(){
-
-const rect =
-canvas.getBoundingClientRect();
-
-
-ctx.clearRect(
-
-0,
-
-0,
-
-rect.width,
-
-rect.height
-
-);
-
-
-/* =====================================
-   HANYA GEMPA
-   AKTIF / MEREDA
-===================================== */
-
-earthquakeStore.forEach(
-
-item => {
-
-
-const g =
-item.data;
-
-
-const coords =
-parseCoordinate(
-g.Coordinates
-);
-
-
-if(!coords)
-return;
-
-
-/* WAKTU */
-
-const time =
-parseEarthquakeTime(
-
-g.DateTime,
-
-g.Tanggal,
-
-g.Jam
-
-);
-
-
-/* STATUS */
-
-const status =
-getEarthquakeStatus(
-time
-);
-
-
-/* STOP JIKA
-   SELESAI / RIWAYAT */
-
-if(
-!status.wave
-)
-return;
-
-
-/* POSISI PETA */
-
-const point =
-map.latLngToContainerPoint(
-
-[
-
-coords.lat,
-
-coords.lng
-
-]
-
-);
-
-
-/* JIKA DI LUAR MAP */
-
-if(
-
-point.x < -200
-
-||
-
-point.y < -200
-
-||
-
-point.x >
-rect.width + 200
-
-||
-
-point.y >
-rect.height + 200
-
-)
-
-return;
-
-
-/* =====================================
-   WAVE CONFIG
-===================================== */
-
-const mag =
-parseFloat(
-g.Magnitude
-)
-||
-3;
-
-
-/*
-
-AKTIF
-
-5 RING
-
-MEREDA
-
-3 RING
-
-*/
-
-const ringCount =
-
-status.name === "AKTIF"
-
-?
-
-5
-
-:
-
-3;
-
-
-/*
-
-SPEED
-
-*/
-
-const speed =
-
-status.speed;
-
-
-/* =====================================
-   DRAW RINGS
-===================================== */
-
-for(
-
-let i=0;
-
-i<ringCount;
-
-i++
-
-){
-
-
-const offset =
-
-(
-
-wavePhase *
-speed
-
-+
-
-i * 22
-
-)
-
-%
-
-110;
-
-
-const radius =
-15 + offset;
-
-
-/* ALPHA */
-
-let alpha =
-1 -
-(
-offset / 110
-);
-
-
-/* MEREDA */
-
-if(
-status.name ===
-"MEREDA"
-){
-
-alpha *= .65;
-
-}
-
-
-/* GRADIENT */
-
-ctx.beginPath();
-
-
-ctx.arc(
-
-point.x,
-
-point.y,
-
-radius,
-
-0,
-
-Math.PI*2
-
-);
-
-
-ctx.strokeStyle =
-
-status.name ===
-"AKTIF"
-
-?
-
-"rgba(255,40,40," +
-alpha +
-")"
-
-:
-
-"rgba(255,140,30," +
-alpha +
-")";
-
-
-ctx.lineWidth =
-
-status.name ===
-"AKTIF"
-
-?
-
-2
-
-:
-
-1.5;
-
-
-ctx.stroke();
-
-
-}
-
-
-/* =====================================
-   PULSE CENTER
-===================================== */
-
-const pulse =
-8 +
-
-Math.sin(
-
-wavePhase*.12
-
-)
-
-*
-3;
-
-
-ctx.beginPath();
-
-
-ctx.arc(
-
-point.x,
-
-point.y,
-
-pulse,
-
-0,
-
-Math.PI*2
-
-);
-
-
-ctx.fillStyle =
-
-status.name ===
-"AKTIF"
-
-?
-
-"rgba(255,40,40,.25)"
-
-:
-
-"rgba(255,140,30,.18)";
-
-
-ctx.fill();
-
-
-}
-
-);
-
-
-/* UPDATE */
-
-wavePhase +=
-1.3;
-
-
-requestAnimationFrame(
-drawWaves
-);
-
-}
-
-
-drawWaves();
-
-
-/* =====================================
-   MAP MOVE
-===================================== */
-
-map.on(
-
-"move",
-
-function(){
-
-/* canvas otomatis
-   gambar ulang */
-
-}
-
-);
-
-
-/* =====================================
-   AUDIO UNLOCK
-===================================== */
-
-document.addEventListener(
-
-"click",
-
-function(){
-
-audioUnlocked =
-true;
-
-},
-
-{
-
-once:true
-
-}
-
-);
-
-
-/* =====================================
-   SOUND
-===================================== */
-
-function playSound(){
-
-if(
-!audioUnlocked
-)
-return;
-
+/* =========================
+   RIWAYAT
+========================= */
+
+async function ambilRiwayat(){
 
 try{
 
 
-if(
-!audioContext
-){
+const response =
+await fetch(
 
-audioContext =
-new(
-
-window.AudioContext
-||
-window.webkitAudioContext
-
-)();
-
-}
-
-
-/* BEEP 1 */
-
-const osc =
-audioContext
-.createOscillator();
-
-
-const gain =
-audioContext
-.createGain();
-
-
-osc.connect(gain);
-
-gain.connect(
-audioContext.destination
-);
-
-
-osc.type =
-"sine";
-
-
-osc.frequency.setValueAtTime(
-
-650,
-
-audioContext.currentTime
+"https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json"
 
 );
 
 
-osc.frequency.linearRampToValueAtTime(
-
-900,
-
-audioContext.currentTime + .25
-
-);
+const json =
+await response.json();
 
 
-gain.gain.setValueAtTime(
-
-.08,
-
-audioContext.currentTime
-
-);
+const daftar =
+json.Infogempa.gempa;
 
 
-gain.gain.exponentialRampToValueAtTime(
-
-.001,
-
-audioContext.currentTime + .8
-
-);
+let html = "";
 
 
-osc.start();
+daftar
+.slice(0,15)
+.forEach(function(data){
 
 
-osc.stop(
+html +=
 
-audioContext.currentTime + .8
+'<div class="history-item">' +
 
-);
+'<div class="history-mag">' +
+
+'🚨 M ' +
+
+data.Magnitude +
+
+'</div>' +
+
+
+'<div class="history-location">' +
+
+'📍 ' +
+
+data.Wilayah +
+
+'</div>' +
+
+
+'<div class="history-info">' +
+
+'🕒 ' +
+
+data.Tanggal +
+
+' ' +
+
+data.Jam +
+
+'</div>' +
+
+
+'<div class="history-info">' +
+
+'📏 ' +
+
+data.Kedalaman +
+
+'</div>' +
+
+
+'</div>';
+
+});
+
+
+document
+.getElementById("history")
+.innerHTML =
+html;
 
 
 }
 
 catch(error){
 
-console.log(error);
+document
+.getElementById("history")
+.innerHTML =
+
+'<div class="loading">' +
+
+'Gagal memuat riwayat gempa' +
+
+'</div>';
 
 }
 
 }
 
 
-/* =====================================
-   REFRESH GPS
-===================================== */
+/* =========================
+   SIMPAN POSTER
+========================= */
 
-function refreshLocation(){
-
-if(
-!navigator.geolocation
-)
-return;
+function simpanPoster(){
 
 
-navigator.geolocation
-.getCurrentPosition(
-
-position => {
-
-
-userLat =
-position.coords.latitude;
-
-userLng =
-position.coords.longitude;
-
-userAccuracy =
-position.coords.accuracy;
+const poster =
+document.getElementById(
+"posterGempa"
+);
 
 
-showUser();
+html2canvas(
 
-
-},
-
-()=>{},
+poster,
 
 {
 
-enableHighAccuracy:true,
+scale:3,
 
-timeout:8000,
+useCORS:true,
 
-maximumAge:300000
+backgroundColor:"#050505"
 
 }
 
+)
+
+.then(function(canvas){
+
+
+const link =
+document.createElement("a");
+
+
+link.download =
+"poster-gempa-" +
+Date.now() +
+".png";
+
+
+link.href =
+canvas.toDataURL(
+"image/png"
 );
 
+
+link.click();
+
+
+});
+
 }
 
 
-/* =====================================
-   STATUS REFRESH
+/* =========================
+   JALANKAN
+========================= */
 
-   PENTING
+mulaiGPS();
 
-   Agar warna otomatis berubah:
+ambilGempa();
 
-   MERAH
-      ↓
+ambilRiwayat();
 
-   ORANYE
-      ↓
-
-   KUNING
-      ↓
-
-   HIJAU
-
-===================================== */
 
 setInterval(
 
-function(){
+ambilGempa,
 
-const earthquakes =
-[];
-
-
-earthquakeStore.forEach(
-
-item => {
-
-earthquakes.push(
-item.data
-);
-
-}
+5000
 
 );
 
 
-/* RENDER ULANG STATUS */
+setInterval(
 
-if(
-earthquakes.length
-){
-
-renderEarthquakes(
-earthquakes
-);
-
-}
-
-},
+ambilRiwayat,
 
 60000
-
-);
-
-
-/* =====================================
-   START
-===================================== */
-
-setStatus(
-
-"🟡 Menyalakan radar...",
-
-"#ffd64c"
-
-);
-
-
-/* GPS */
-
-getLocation();
-
-
-/* GEMPA */
-
-loadEarthquakes();
-
-
-/* UPDATE BMKG */
-
-setInterval(
-
-loadEarthquakes,
-
-REFRESH_TIME
-
-);
-
-
-/* GPS UPDATE */
-
-setInterval(
-
-refreshLocation,
-
-300000
 
 );
 
