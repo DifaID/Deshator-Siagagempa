@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DESHATOR LIVE SEISMOGRAPH</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#050505;
+color:white;
+font-family:Arial,sans-serif;
+padding:15px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+color:cyan;
+margin:10px 0 5px;
+font-size:32px;
+}
+
+.subtitle{
+text-align:center;
+color:#777;
+font-size:12px;
+margin-bottom:20px;
+letter-spacing:1px;
+}
+
+.card{
+background:#101010;
+border:1px solid #252525;
+border-radius:20px;
+padding:18px;
+margin-bottom:15px;
+}
+
+.status{
+text-align:center;
+padding:14px;
+border-radius:12px;
+background:#181818;
+color:#ffd000;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.status.live{
+color:#00ff88;
+}
+
+.status.error{
+color:#ff4444;
+}
+
+.station-title{
+text-align:center;
+font-size:12px;
+color:#777;
+letter-spacing:2px;
+}
+
+.station{
+text-align:center;
+font-size:26px;
+color:cyan;
+font-weight:bold;
+margin:10px;
+}
+
+.graph-box{
+position:relative;
+height:320px;
+}
+
+canvas{
+width:100%;
+height:100%;
+background:#050505;
+border:1px solid #222;
+border-radius:12px;
+}
+
+.watermark{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:28px;
+font-weight:bold;
+color:rgba(255,255,255,.08);
+white-space:nowrap;
+pointer-events:none;
+}
+
+.data{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.box{
+background:#181818;
+padding:13px;
+border-radius:12px;
+text-align:center;
+}
+
+.label{
+font-size:11px;
+color:#777;
+}
+
+.value{
+font-size:16px;
+color:cyan;
+font-weight:bold;
+margin-top:6px;
+word-break:break-word;
+}
+
+button{
+width:100%;
+border:none;
+padding:14px;
+border-radius:12px;
+background:cyan;
+color:black;
+font-size:16px;
+font-weight:bold;
+margin-top:15px;
+cursor:pointer;
+}
+
+button.disconnect{
+background:#ff4444;
+color:white;
+}
+
+.info{
+color:#888;
+font-size:13px;
+line-height:1.7;
+}
+
+.footer{
+text-align:center;
+color:#555;
+font-size:11px;
+margin:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 DESHATOR</h1>
+
+<div class="subtitle">
+LIVE REAL-TIME SEISMIC MONITOR
+</div>
+
+
+<div class="card">
+
+<div
+class="status"
+id="status">
+
+🟡 SIAP MENGHUBUNGKAN
+
+</div>
+
+
+<div class="station-title">
+
+📡 STASIUN SEISMOGRAF
+
+</div>
+
+
+<div
+class="station"
+id="station">
+
+EARTHSCOPE SEEDLINK
+
+</div>
+
+
+<div class="graph-box">
+
+<canvas
+id="graph">
+</canvas>
+
+<div class="watermark">
+
+IG.RMN.TMS.TYNP3
+
+</div>
+
+</div>
+
+
+<div class="data">
+
+
+<div class="box">
+
+<div class="label">
+
+SERVER
+
+</div>
+
+<div class="value">
+
+EARTHSCOPE
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+
+KONEKSI
+
+</div>
+
+<div
+class="value"
+id="connection">
+
+OFFLINE
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+
+DATA MASUK
+
+</div>
+
+<div
+class="value"
+id="packets">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+
+UKURAN DATA
+
+</div>
+
+<div
+class="value"
+id="bytes">
+
+0 B
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<button
+onclick="connectSeedLink()">
+
+📡 HUBUNGKAN LIVE SEISMOGRAF
+
+</button>
+
+
+<button
+class="disconnect"
+onclick="disconnectSeedLink()">
+
+🔴 PUTUSKAN KONEKSI
+
+</button>
+
+
+</div>
+
+
+<div class="card">
+
+<h3>
+
+📡 INFORMASI
+
+</h3>
+
+<div
+class="info"
+id="info">
+
+Website siap terhubung ke server
+SeedLink EarthScope.
+
+<br><br>
+
+Tekan tombol hubungkan untuk
+memulai koneksi.
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+DATA STREAM: EARTHSCOPE SEEDLINK
+
+<br><br>
+
+DESHATOR • SEISMIC MONITOR
+
+<br>
+
+IG.RMN.TMS.TYNP3
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =======================
+CANVAS
+======================= */
+
+
+const canvas =
+document.getElementById(
+"graph"
+);
+
+
+const ctx =
+canvas.getContext(
+"2d"
+);
+
+
+let points = [];
+
+let socket = null;
+
+let packetCount = 0;
+
+let totalBytes = 0;
+
+let connected = false;
+
+
+
+function resizeCanvas(){
+
+
+canvas.width =
+canvas.offsetWidth;
+
+
+canvas.height =
+canvas.offsetHeight;
+
+
+points = [];
+
+
+for(
+
+let i = 0;
+
+i < canvas.width;
+
+i++
+
+){
+
+points.push(
+
+canvas.height / 2
+
+);
+
+}
+
+
+}
+
+
+resizeCanvas();
+
+
+window.addEventListener(
+
+"resize",
+
+resizeCanvas
+
+);
+
+
+
+
+/* =======================
+GRAFIK
+======================= */
+
+
+function drawGraph(){
+
+
+ctx.clearRect(
+
+0,
+
+0,
+
+canvas.width,
+
+canvas.height
+
+);
+
+
+/* GARIS TENGAH */
+
+
+ctx.beginPath();
+
+
+ctx.strokeStyle =
+
+"rgba(255,255,255,.08)";
+
+
+ctx.lineWidth = 1;
+
+
+ctx.moveTo(
+
+0,
+
+canvas.height / 2
+
+);
+
+
+ctx.lineTo(
+
+canvas.width,
+
+canvas.height / 2
+
+);
+
+
+ctx.stroke();
+
+
+
+/* WAVEFORM */
+
+
+ctx.beginPath();
+
+
+ctx.strokeStyle =
+"cyan";
+
+
+ctx.lineWidth = 2;
+
+
+for(
+
+let i = 0;
+
+i < points.length;
+
+i++
+
+){
+
+ctx.lineTo(
+
+i,
+
+points[i]
+
+);
+
+}
+
+
+ctx.stroke();
+
+
+requestAnimationFrame(
+drawGraph
+);
+
+
+}
+
+
+drawGraph();
+
+
+
+
+/* =======================
+TAMBAH SAMPLE
+
+HANYA DIGUNAKAN JIKA
+MINISEED BERHASIL
+DIURAI
+======================= */
+
+
+function addSample(value){
+
+
+const center =
+
+canvas.height / 2;
+
+
+const scale =
+
+0.00001;
+
+
+let y =
+
+center -
+(value * scale);
+
+
+
+/* BATASI GRAFIK */
+
+
+if(y < 5){
+
+y = 5;
+
+}
+
+
+if(
+
+y >
+canvas.height - 5
+
+){
+
+y =
+canvas.height - 5;
+
+}
+
+
+
+points.push(y);
+
+
+points.shift();
+
+
+}
+
+
+
+
+/* =======================
+STATUS
+======================= */
+
+
+function setStatus(
+
+text,
+
+type = ""
+
+){
+
+
+const status =
+
+document.getElementById(
+"status"
+);
+
+
+status.innerText =
+text;
+
+
+status.className =
+"status";
+
+
+if(type){
+
+status.classList.add(
+type
+);
+
+}
+
+
+}
+
+
+
+
+/* =======================
+KONEKSI
+======================= */
+
+
+function connectSeedLink(){
+
+
+if(
+
+socket &&
+
+socket.readyState ===
+WebSocket.OPEN
+
+){
+
+return;
+
+}
+
+
+
+setStatus(
+
+"🟡 MENGHUBUNGKAN KE EARTHSCOPE..."
+
+);
+
+
+document
+.getElementById("info")
+.innerHTML =
+
+"Sedang membuat koneksi ke server "
++
+"SeedLink EarthScope...";
+
+
+
+try{
+
+
+socket =
+new WebSocket(
+
+"wss://rtserve.earthscope.org/seedlink"
+
+);
+
+
+socket.binaryType =
+"arraybuffer";
+
+
+
+socket.onopen =
+function(){
+
+
+connected = true;
+
+
+setStatus(
+
+"🟢 TERHUBUNG KE SEEDLINK",
+
+"live"
+
+);
+
+
+document
+.getElementById(
+"connection"
+)
+.innerText =
+"ONLINE";
+
+
+document
+.getElementById("info")
+.innerHTML =
+
+"📡 Koneksi WebSocket berhasil.<br><br>"
+
++
+
+"Menunggu konfigurasi stream "
++
+
+"dan paket waveform dari server.";
+
+
+};
+
+
+
+socket.onmessage =
+function(event){
+
+
+/* PESAN TEXT */
+
+
+if(
+
+typeof event.data ===
+"string"
+
+){
+
+
+console.log(
+"SEEDLINK:",
+event.data
+);
+
+
+return;
+
+}
+
+
+
+/* DATA BINARY */
+
+
+if(
+
+event.data instanceof
+ArrayBuffer
+
+){
+
+
+packetCount++;
+
+
+totalBytes +=
+event.data.byteLength;
+
+
+
+document
+.getElementById(
+"packets"
+)
+.innerText =
+packetCount;
+
+
+
+document
+.getElementById(
+"bytes"
+)
+.innerText =
+
+formatBytes(
+totalBytes
+);
+
+
+
+document
+.getElementById(
+"info"
+)
+.innerHTML =
+
+"📦 Paket binary miniSEED diterima.<br><br>"
+
++
+
+"Jumlah paket: <b>"
++
+packetCount
++
+"</b><br>"
+
++
+
+"Ukuran data: <b>"
++
+formatBytes(totalBytes)
++
+"</b><br><br>"
+
++
+
+"Data ini berasal dari stream "
++
+
+"seismik server.";
+
+}
+
+};
+
+
+
+socket.onerror =
+function(error){
+
+
+console.log(error);
+
+
+setStatus(
+
+"🔴 KONEKSI ERROR",
+
+"error"
+
+);
+
+
+document
+.getElementById(
+"connection"
+)
+.innerText =
+"ERROR";
+
+
+};
+
+
+
+socket.onclose =
+function(){
+
+
+connected =
+false;
+
+
+document
+.getElementById(
+"connection"
+)
+.innerText =
+"OFFLINE";
+
+
+setStatus(
+
+"🔴 KONEKSI TERPUTUS",
+
+"error"
+
+);
+
+
+};
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+setStatus(
+
+"🔴 GAGAL MEMBUAT KONEKSI",
+
+"error"
+
+);
+
+
+}
+
+
+}
+
+
+
+
+/* =======================
+PUTUSKAN
+======================= */
+
+
+function disconnectSeedLink(){
+
+
+if(socket){
+
+
+socket.close();
+
+
+socket = null;
+
+
+}
+
+
+connected = false;
+
+
+document
+.getElementById(
+"connection"
+)
+.innerText =
+"OFFLINE";
+
+
+setStatus(
+
+"🔴 KONEKSI DIPUTUS"
+
+);
+
+
+}
+
+
+
+
+/* =======================
+FORMAT BYTES
+======================= */
+
+
+function formatBytes(bytes){
+
+
+if(bytes === 0){
+
+return "0 B";
+
+}
+
+
+const units =
+
+[
+
+"B",
+
+"KB",
+
+"MB",
+
+"GB"
+
+];
+
+
+const i =
+
+Math.floor(
+
+Math.log(bytes) /
+
+Math.log(1024)
+
+);
+
+
+return (
+
+bytes /
+
+Math.pow(
+
+1024,
+
+i
+
+)
+
+).toFixed(2)
+
++
+
+" "
+
++
+
+units[i];
+
+
+}
+
+
+/* =======================
+SUARA
+======================= */
+
+
+let audioReady = false;
+
+
+document.addEventListener(
+
+"click",
+
+function(){
+
+
+audioReady =
+true;
+
+
+},
+
+{
+
+once:true
+
+}
+
+);
+
+
+function playSound(){
+
+
+if(!audioReady){
+
+return;
+
+}
+
+
+const AudioContext =
+
+window.AudioContext ||
+
+window.webkitAudioContext;
+
+
+if(!AudioContext){
+
+return;
+
+}
+
+
+const audio =
+
+new AudioContext();
+
+
+const oscillator =
+
+audio.createOscillator();
+
+
+const gain =
+
+audio.createGain();
+
+
+oscillator.connect(gain);
+
+
+gain.connect(
+audio.destination
+);
+
+
+oscillator.frequency.value =
+120;
+
+
+gain.gain.value =
+0.15;
+
+
+oscillator.start();
+
+
+oscillator.stop(
+
+audio.currentTime +
+0.15
+
+);
+
+
+}
+
+
+</script>
+
+</body>
+</html>
