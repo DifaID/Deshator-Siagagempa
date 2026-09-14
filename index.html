@@ -4,12 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>WORLD DISASTER RADAR</title>
+<title>WORLD DISASTER RADAR V3</title>
 
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 
@@ -21,240 +19,327 @@ html,body{
 margin:0;
 width:100%;
 height:100%;
-background:#020509;
+background:#020609;
 font-family:Arial,sans-serif;
 color:white;
 overflow:hidden;
 }
 
-/* =========================
-HEADER
-========================= */
+/* HEADER */
 
 #header{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:72px;
-z-index:1000;
+height:60px;
+z-index:2000;
 
-background:
-linear-gradient(
-90deg,
-#020509,
-#07131b,
-#020509
-);
+background:#050b0f;
 
-border-bottom:
-1px solid #12303b;
+border-bottom:1px solid #123844;
 
-padding:10px;
+display:flex;
+align-items:center;
+justify-content:space-between;
 
-text-align:center;
+padding:0 12px;
 }
 
 #title{
-font-size:22px;
 font-weight:bold;
-letter-spacing:2px;
+font-size:16px;
+letter-spacing:1px;
 color:#00eaff;
-text-shadow:
-0 0 10px #00bcd4;
 }
 
-#subtitle{
+#live{
 font-size:10px;
-color:#6f8790;
-margin-top:4px;
-letter-spacing:3px;
+color:#00ff88;
 }
 
-/* =========================
-MAP
-========================= */
+#clock{
+font-size:11px;
+color:#9ddbe5;
+}
+
+
+/* MAP */
 
 #map{
 position:absolute;
-top:72px;
-left:0;
+top:60px;
+bottom:110px;
 width:100%;
-height:calc(100% - 150px);
-background:#020509;
+background:#020609;
 }
 
-/* =========================
-BOTTOM PANEL
-========================= */
 
-#panel{
+/* STATUS */
+
+#status{
 position:fixed;
-bottom:0;
+
+top:70px;
+left:10px;
+
+z-index:1500;
+
+background:rgba(0,0,0,.85);
+
+border:1px solid #164653;
+
+padding:8px;
+
+border-radius:8px;
+
+font-size:10px;
+
+color:#00ff88;
+}
+
+
+/* CANVAS */
+
+#waveCanvas{
+
+position:absolute;
+
+top:60px;
+
 left:0;
+
 width:100%;
-height:78px;
-z-index:1000;
 
-background:
-rgba(3,10,15,.97);
+height:calc(100% - 170px);
 
-border-top:
-1px solid #12303b;
+z-index:500;
+
+pointer-events:none;
+
+}
+
+
+/* LEGEND */
+
+#legend{
+
+position:fixed;
+
+top:70px;
+right:10px;
+
+z-index:1500;
+
+background:rgba(0,0,0,.85);
+
+border:1px solid #164653;
+
+border-radius:8px;
+
+padding:8px;
+
+font-size:9px;
+
+line-height:1.8;
+
+}
+
+.dot{
+
+width:8px;
+height:8px;
+
+border-radius:50%;
+
+display:inline-block;
+
+margin-right:4px;
+
+}
+
+.red{
+background:red;
+}
+
+.orange{
+background:orange;
+}
+
+.yellow{
+background:#ffd000;
+}
+
+
+/* BOTTOM */
+
+#bottom{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+height:110px;
+
+z-index:2000;
+
+background:#050b0f;
+
+border-top:1px solid #123844;
+
+}
+
+
+/* STATS */
+
+#stats{
+
+height:45px;
 
 display:grid;
 
 grid-template-columns:
 repeat(4,1fr);
 
-padding:8px;
-gap:5px;
+border-bottom:
+1px solid #102b34;
+
 }
 
-.box{
+.stat{
+
 text-align:center;
+
+padding-top:6px;
+
 border-right:
-1px solid #132b35;
+1px solid #102b34;
+
 }
 
-.box:last-child{
-border-right:none;
+.stat:last-child{
+border:none;
 }
 
 .label{
-font-size:9px;
-color:#64727a;
+
+font-size:8px;
+
+color:#70818a;
+
 }
 
 .value{
-margin-top:6px;
-font-size:15px;
+
+font-size:13px;
+
 font-weight:bold;
+
+margin-top:4px;
+
 color:#00eaff;
+
 }
 
-/* =========================
-STATUS
-========================= */
 
-#status{
-position:fixed;
-top:82px;
-left:10px;
-z-index:1000;
+/* FEED */
 
-background:
-rgba(0,0,0,.8);
+#feed{
 
-border:
-1px solid #173842;
+height:65px;
 
-border-radius:8px;
+overflow-x:auto;
 
-padding:8px 10px;
+white-space:nowrap;
 
-font-size:11px;
+padding:7px;
 
-color:#00ff88;
 }
 
-/* =========================
-LEGEND
-========================= */
+.feedItem{
 
-#legend{
-position:fixed;
-
-right:10px;
-
-top:82px;
-
-z-index:1000;
-
-background:
-rgba(0,0,0,.82);
-
-border:
-1px solid #173842;
-
-border-radius:10px;
-
-padding:10px;
-
-font-size:10px;
-
-line-height:2;
-}
-
-.dot{
 display:inline-block;
 
-width:9px;
-height:9px;
+width:180px;
 
-border-radius:50%;
+height:48px;
 
-margin-right:5px;
+margin-right:6px;
+
+padding:6px;
+
+background:#081318;
+
+border:1px solid #10333d;
+
+border-radius:7px;
+
+vertical-align:top;
+
+white-space:normal;
+
+overflow:hidden;
+
 }
 
-.eq-dot{
-background:red;
-box-shadow:
-0 0 8px red;
+.mag{
+
+color:#ff4444;
+
+font-size:14px;
+
+font-weight:bold;
+
 }
 
-.vol-normal{
-background:#00ff88;
+.place{
+
+font-size:9px;
+
+color:#ddd;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+margin-top:3px;
+
 }
 
-.vol-yellow{
-background:#ffd000;
-}
 
-.vol-orange{
-background:orange;
-}
+/* EARTHQUAKE MARKER */
 
-.vol-red{
-background:red;
-}
+.eq{
 
-/* =========================
-EARTHQUAKE MARKER
-========================= */
+width:12px;
 
-.eq-marker{
-
-width:14px;
-height:14px;
+height:12px;
 
 background:#ff2020;
 
+border:2px solid white;
+
 border-radius:50%;
 
-border:
-2px solid white;
-
 box-shadow:
-0 0 14px red;
+0 0 8px red;
 
 }
 
-/* =========================
-VOLCANO MARKER
-========================= */
 
-.volcano-marker{
+/* VOLCANO MARKER */
+
+.volcano{
 
 width:18px;
+
 height:18px;
-
-border-radius:50% 50% 40% 40%;
-
-background:#00ff88;
-
-border:
-2px solid white;
 
 display:flex;
 
@@ -262,77 +347,48 @@ align-items:center;
 
 justify-content:center;
 
-font-size:9px;
+font-size:13px;
 
-box-shadow:
-0 0 10px currentColor;
-
-}
-
-/* =========================
-WAVE
-========================= */
-
-.wave-circle{
-
-border:
-2px solid
-rgba(255,40,40,.75);
-
-background:
-rgba(255,0,0,.02);
+filter:
+drop-shadow(0 0 5px orange);
 
 }
 
-/* =========================
-POPUP
-========================= */
+
+/* POPUP */
 
 .leaflet-popup-content-wrapper{
 
-background:#081116;
+background:#071116;
+
 color:white;
 
-border:
-1px solid #17404c;
+border:1px solid #15505e;
 
 }
 
 .leaflet-popup-tip{
 
-background:#081116;
+background:#071116;
 
 }
 
-.popup-title{
 
-font-weight:bold;
+/* MOBILE */
 
-color:#00eaff;
+@media(max-width:600px){
 
-margin-bottom:8px;
-
+#title{
+font-size:13px;
 }
 
-.popup-data{
-
-font-size:12px;
-
-line-height:1.8;
-
+#clock{
+display:none;
 }
 
-/* =========================
-LEAFLET DARK
-========================= */
-
-.leaflet-control-zoom a{
-
-background:#081116;
-
-color:#00eaff;
-
-border-color:#163843;
+#legend{
+font-size:8px;
+}
 
 }
 
@@ -342,15 +398,18 @@ border-color:#163843;
 
 <body>
 
+
 <div id="header">
 
 <div id="title">
-🌍 WORLD DISASTER RADAR
+🌍 DISASTER RADAR V3
 </div>
 
-<div id="subtitle">
-LIVE EARTHQUAKE • VOLCANO MONITOR
+<div id="live">
+● LIVE DATA
 </div>
+
+<div id="clock"></div>
 
 </div>
 
@@ -363,28 +422,17 @@ LIVE EARTHQUAKE • VOLCANO MONITOR
 <div id="legend">
 
 <div>
-<span class="dot eq-dot"></span>
-GEMPA
+<span class="dot red"></span>
+GEMPA BARU
 </div>
 
 <div>
-<span class="dot vol-normal"></span>
-GUNUNG NORMAL
+<span class="dot orange"></span>
+GUNUNG AKTIF
 </div>
 
 <div>
-<span class="dot vol-yellow"></span>
-AKTIVITAS NAIK
-</div>
-
-<div>
-<span class="dot vol-orange"></span>
-TINGGI
-</div>
-
-<div>
-<span class="dot vol-red"></span>
-WARNING
+⭕ GELOMBANG BARU
 </div>
 
 </div>
@@ -392,17 +440,22 @@ WARNING
 
 <div id="map"></div>
 
+<canvas id="waveCanvas"></canvas>
 
-<div id="panel">
 
-<div class="box">
+<div id="bottom">
+
+
+<div id="stats">
+
+
+<div class="stat">
 
 <div class="label">
-GEMPA AKTIF
+GEMPA
 </div>
 
-<div
-class="value"
+<div class="value"
 id="eqCount">
 0
 </div>
@@ -410,14 +463,27 @@ id="eqCount">
 </div>
 
 
-<div class="box">
+<div class="stat">
 
 <div class="label">
-GUNUNG
+TERBESAR
 </div>
 
-<div
-class="value"
+<div class="value"
+id="maxMag">
+-
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+GUNUNG AKTIF
+</div>
+
+<div class="value"
 id="volCount">
 0
 </div>
@@ -425,34 +491,25 @@ id="volCount">
 </div>
 
 
-<div class="box">
-
-<div class="label">
-FPS
-</div>
-
-<div
-class="value"
-id="fps">
-0
-</div>
-
-</div>
-
-
-<div class="box">
+<div class="stat">
 
 <div class="label">
 UPDATE
 </div>
 
-<div
-class="value"
+<div class="value"
 id="update">
 -
 </div>
 
 </div>
+
+
+</div>
+
+
+<div id="feed"></div>
+
 
 </div>
 
@@ -464,172 +521,226 @@ src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 
 <script>
 
-/* =========================
-CONFIG
-========================= */
 
-const USGS_EQ_URL =
+/* =====================
+CONFIG
+===================== */
+
+const EARTHQUAKE_URL =
 "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
 
-const USGS_VOLCANO_STATUS =
-"https://volcanoes.usgs.gov/vsc/api/volcanoApi/geojson";
 
-const UPDATE_TIME =
+const VOLCANO_URL =
+"https://volcanoes.usgs.gov/hans-public/api/volcano/getElevatedVolcanoes";
+
+
+const REFRESH_TIME =
 60000;
 
 
-/* =========================
+const MAX_EARTHQUAKES =
+15;
+
+
+/* =====================
 MAP
-========================= */
+===================== */
 
 const map =
-L.map("map",{
+L.map(
+"map",
+{
 zoomControl:true,
-worldCopyJump:true
-})
-.setView([15,0],2);
+worldCopyJump:true,
+preferCanvas:true
+}
+)
+.setView(
+[20,0],
+2
+);
 
 
 L.tileLayer(
 
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+"https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
 
 {
+
 maxZoom:18,
-attribution:"© OpenStreetMap"
+
+updateWhenIdle:true,
+
+keepBuffer:1,
+
+attribution:
+"© OpenStreetMap © CARTO"
+
 }
 
 )
 .addTo(map);
 
 
-/* =========================
-LAYERS
-========================= */
-
 const earthquakeLayer =
-L.layerGroup().addTo(map);
+L.layerGroup()
+.addTo(map);
 
-const waveLayer =
-L.layerGroup().addTo(map);
 
 const volcanoLayer =
-L.layerGroup().addTo(map);
+L.layerGroup()
+.addTo(map);
 
 
-/* =========================
-DATA
-========================= */
-
-let earthquakes = [];
-
-let volcanoes = [];
-
-let earthquakeMarkers = [];
-
-let waves = [];
-
-
-/* =========================
+/* =====================
 STATUS
-========================= */
+===================== */
 
-function setStatus(text,color="#00ff88"){
+function setStatus(text,color){
 
-const status =
-document.getElementById("status");
+const el =
+document.getElementById(
+"status"
+);
 
-status.innerText = text;
+el.innerText =
+text;
 
-status.style.color = color;
+el.style.color =
+color;
 
 }
 
 
-/* =========================
-EARTHQUAKE
-========================= */
+/* =====================
+KNOWN EVENTS
+
+Menyimpan ID gempa
+agar gelombang hanya
+muncul untuk event baru
+
+===================== */
+
+let knownEarthquakes =
+new Set();
+
+
+/* =====================
+LOAD GEMPA
+===================== */
 
 async function loadEarthquakes(){
 
 try{
 
+
 setStatus(
-"🟡 MENGAMBIL DATA GEMPA...",
+"🟡 MENGAMBIL GEMPA...",
 "#ffd000"
 );
 
 
-const response =
-await fetch(USGS_EQ_URL);
-
-
-if(!response.ok){
-
-throw new Error(
-"USGS HTTP " +
-response.status
+const res =
+await fetch(
+EARTHQUAKE_URL
 );
-
-}
 
 
 const data =
-await response.json();
+await res.json();
 
 
-earthquakes =
-data.features;
+let earthquakes =
+data.features
+.filter(eq =>
+eq.properties.mag !== null
+)
+.sort((a,b)=>
+b.properties.time -
+a.properties.time
+)
+.slice(
+0,
+MAX_EARTHQUAKES
+);
 
-
-/* CLEAR */
 
 earthquakeLayer.clearLayers();
 
-waveLayer.clearLayers();
 
-waves = [];
+const feed =
+document.getElementById(
+"feed"
+);
 
 
-/* LOOP */
+feed.innerHTML =
+"";
+
+
+let maxMag =
+0;
+
 
 earthquakes.forEach(eq => {
+
 
 const p =
 eq.properties;
 
-const g =
+
+const c =
 eq.geometry.coordinates;
 
 
-const lng = g[0];
+const lng =
+c[0];
 
-const lat = g[1];
 
-const depth = g[2];
+const lat =
+c[1];
 
-const mag = p.mag;
+
+const depth =
+c[2];
+
+
+const mag =
+p.mag;
+
+
+/* MAX */
+
+if(
+mag > maxMag
+){
+
+maxMag =
+mag;
+
+}
 
 
 /* MARKER */
 
 const marker =
 L.marker(
-
 [lat,lng],
-
 {
+
 icon:
 L.divIcon({
 
 className:"",
 
 html:
-'<div class="eq-marker"></div>',
+'<div class="eq"></div>',
 
-iconSize:[14,14],
+iconSize:
+[12,12],
 
-iconAnchor:[7,7]
+iconAnchor:
+[6,6]
 
 })
 
@@ -642,14 +753,16 @@ iconAnchor:[7,7]
 
 marker.bindPopup(
 
-'<div class="popup-title">' +
-'🔴 GEMPA BUMI' +
-'</div>' +
+'<b style="color:#ff5555">' +
 
-'<div class="popup-data">' +
+'🔴 GEMPA BUMI' +
+
+'</b><br><br>' +
 
 '📍 ' +
-(p.place || "Tidak diketahui") +
+
+(p.place ||
+"Unknown") +
 
 '<br>' +
 
@@ -664,11 +777,12 @@ depth +
 
 '<br>' +
 
-'⏰ ' +
-new Date(p.time)
-.toLocaleString("id-ID") +
+'🕒 ' +
 
-'</div>'
+new Date(p.time)
+.toLocaleString(
+"id-ID"
+)
 
 );
 
@@ -678,276 +792,326 @@ earthquakeLayer
 );
 
 
-/* WAVE OBJECT */
+/* =====================
 
-waves.push({
+GEMPA BARU
 
-lat:lat,
+Hanya animasi
+jika ID belum ada
 
-lng:lng,
+===================== */
 
-mag:mag || 0,
-
-radius:0,
-
-maxRadius:
-Math.max(
-80000,
-Math.min(
-mag * 180000,
-1200000
+if(
+!knownEarthquakes.has(
+eq.id
 )
-),
+){
 
-circle:
-L.circle(
-[lat,lng],
-{
-radius:0,
+createWave(
+lat,
+lng,
+mag
+);
 
-color:"#ff2020",
 
-weight:2,
-
-opacity:.65,
-
-fillOpacity:.02
+knownEarthquakes.add(
+eq.id
+);
 
 }
-).addTo(
-waveLayer
+
+
+/* FEED */
+
+const item =
+document.createElement(
+"div"
+);
+
+
+item.className =
+"feedItem";
+
+
+item.innerHTML =
+
+'<div class="mag">' +
+
+'M ' +
+mag +
+
+'</div>' +
+
+'<div class="place">' +
+
+'📍 ' +
+(p.place ||
+"Unknown") +
+
+'</div>';
+
+
+feed.appendChild(
+item
+);
+
+
+});
+
+
+/* BATASI MEMORY */
+
+if(
+knownEarthquakes.size >
+100
+){
+
+knownEarthquakes =
+new Set(
+earthquakes.map(
+eq => eq.id
 )
+);
 
-});
+}
 
 
-});
-
+/* STATS */
 
 document
-.getElementById("eqCount")
+.getElementById(
+"eqCount"
+)
 .innerText =
 earthquakes.length;
 
 
-setStatus(
-"🟢 DATA GEMPA LIVE"
+document
+.getElementById(
+"maxMag"
+)
+.innerText =
+"M " +
+maxMag;
+
+
+/* UPDATE */
+
+document
+.getElementById(
+"update"
+)
+.innerText =
+
+new Date()
+.toLocaleTimeString(
+"id-ID"
 );
 
 
-updateTime();
+setStatus(
+"🟢 GEMPA LIVE",
+"#00ff88"
+);
 
 
 }
 
 catch(error){
 
-console.error(error);
+
+console.error(
+error
+);
+
 
 setStatus(
 "🔴 GAGAL DATA GEMPA",
 "#ff4444"
 );
 
-}
 
 }
 
+}
 
-/* =========================
-VOLCANO STATUS
-========================= */
+
+/* =====================
+VOLCANO
+
+Hanya elevated volcano
+dari USGS
+
+===================== */
 
 async function loadVolcanoes(){
 
 try{
 
-const response =
+
+const res =
 await fetch(
-USGS_VOLCANO_STATUS
+VOLCANO_URL
 );
-
-
-if(!response.ok){
-
-throw new Error(
-"VOLCANO HTTP " +
-response.status
-);
-
-}
 
 
 const data =
-await response.json();
+await res.json();
 
-
-volcanoes =
-data.features || [];
-
-
-/* CLEAR */
 
 volcanoLayer.clearLayers();
 
 
+let count = 0;
+
+
+/*
+API bisa memiliki
+format array berbeda
+
+*/
+
+const volcanoes =
+Array.isArray(data)
+
+?
+
+data
+
+:
+
+data.volcanoes ||
+[];
+
+
 volcanoes.forEach(v => {
 
-const props =
-v.properties || {};
 
-const coords =
-v.geometry
-?
-v.geometry.coordinates
-:
-null;
+const lat =
+
+v.latitude ||
+v.lat;
 
 
-if(!coords){
+const lng =
+
+v.longitude ||
+v.lon ||
+v.lng;
+
+
+/* CEK */
+
+if(
+lat == null ||
+lng == null
+){
 
 return;
 
 }
 
 
-const lng =
-coords[0];
-
-const lat =
-coords[1];
+count++;
 
 
-/* STATUS */
+const name =
 
-const status =
-String(
+v.volcanoName ||
 
-props.colorCode ||
+v.name ||
 
-props.color ||
-
-props.status ||
-
-"GREEN"
-
-).toUpperCase();
+"Volcano";
 
 
-let color =
-"#00ff88";
+const country =
+
+v.country ||
+
+"-";
 
 
-if(
-status.includes("YELLOW")
-){
+const colorCode =
 
-color="#ffd000";
+v.colorCode ||
 
-}
+v.color_code ||
 
-
-if(
-status.includes("ORANGE")
-){
-
-color="orange";
-
-}
+"";
 
 
-if(
-status.includes("RED")
-){
+const alertLevel =
 
-color="red";
+v.alertLevel ||
 
-}
+v.alert_level ||
+
+"";
 
 
-/* ICON */
+const ashInfo =
 
-const icon =
-L.divIcon({
+v.ash ||
 
-className:"",
+v.ashInfo ||
 
-html:
+v.plume ||
 
-'<div ' +
-
-'style="' +
-
-'width:18px;' +
-
-'height:18px;' +
-
-'background:' +
-color +
-';' +
-
-'border:2px solid white;' +
-
-'border-radius:50% 50% 35% 35%;' +
-
-'display:flex;' +
-
-'align-items:center;' +
-
-'justify-content:center;' +
-
-'font-size:10px;' +
-
-'box-shadow:0 0 12px ' +
-color +
-';' +
-
-'">' +
-
-'🌋' +
-
-'</div>',
-
-iconSize:[18,18],
-
-iconAnchor:[9,9]
-
-});
+"Data abu tidak tersedia";
 
 
 const marker =
 L.marker(
 [lat,lng],
-{icon:icon}
+{
+
+icon:
+L.divIcon({
+
+className:"",
+
+html:
+'<div class="volcano">🌋</div>',
+
+iconSize:
+[18,18],
+
+iconAnchor:
+[9,9]
+
+})
+
+}
+
 );
-
-
-const name =
-
-props.volcanoName ||
-
-props.name ||
-
-props.volName ||
-
-"Volcano";
 
 
 marker.bindPopup(
 
-'<div class="popup-title">' +
+'<b style="color:orange">' +
 
 '🌋 ' +
 name +
 
-'</div>' +
+'</b><br><br>' +
 
-'<div class="popup-data">' +
+'🌍 Negara: ' +
+country +
 
-'STATUS: ' +
-status +
+'<br>' +
 
-'</div>'
+'🚨 Status: ' +
+colorCode +
+
+'<br>' +
+
+'⚠️ Level: ' +
+alertLevel +
+
+'<br>' +
+
+'☁️ Abu: ' +
+ashInfo
 
 );
 
@@ -961,24 +1125,28 @@ volcanoLayer
 
 
 document
-.getElementById("volCount")
+.getElementById(
+"volCount"
+)
 .innerText =
-volcanoes.length;
+count;
 
 
 }
 
 catch(error){
 
-console.error(
-"VOLCANO ERROR:",
+
+console.log(
+"VOLCANO DATA ERROR",
 error
 );
 
+
 /*
-Tidak menghentikan
-sistem gempa
-jika data gunung gagal
+Tidak membuat web
+error jika API gunung
+sedang tidak bisa diakses
 */
 
 }
@@ -986,111 +1154,236 @@ jika data gunung gagal
 }
 
 
-/* =========================
-ANIMASI WAVE
-========================= */
+/* =====================
+CANVAS WAVE
 
-function animateWaves(){
+Lebih ringan
+dibanding Leaflet circles
 
-waves.forEach(wave => {
+===================== */
 
-wave.radius +=
-Math.max(
-5000,
-wave.mag * 1500
+const canvas =
+document.getElementById(
+"waveCanvas"
 );
 
 
-if(
-wave.radius >
-wave.maxRadius
-){
+const ctx =
+canvas.getContext(
+"2d"
+);
 
-wave.radius = 0;
+
+let waves = [];
+
+
+/* RESIZE */
+
+function resizeCanvas(){
+
+const rect =
+canvas.getBoundingClientRect();
+
+
+canvas.width =
+rect.width *
+devicePixelRatio;
+
+
+canvas.height =
+rect.height *
+devicePixelRatio;
+
+
+ctx.setTransform(
+devicePixelRatio,
+0,
+0,
+devicePixelRatio,
+0,
+0
+);
 
 }
 
 
-/* UPDATE */
-
-wave.circle.setRadius(
-wave.radius
+window.addEventListener(
+"resize",
+resizeCanvas
 );
 
 
+resizeCanvas();
+
+
+/* CREATE WAVE */
+
+function createWave(
+lat,
+lng,
+mag
+){
+
+
+const point =
+map.latLngToContainerPoint(
+[lat,lng]
+);
+
+
+/*
+Canvas koordinat
+sama dengan map
+
+*/
+
+
+waves.push({
+
+lat:lat,
+
+lng:lng,
+
+radius:5,
+
+maxRadius:
+
+100 +
+
+Math.max(
+50,
+mag * 40
+),
+
+alpha:1
+
 });
+
+
+}
+
+
+/* ANIMATE */
+
+function animateWaves(){
+
+
+ctx.clearRect(
+
+0,
+0,
+
+canvas.width,
+canvas.height
+
+);
+
+
+waves.forEach(w => {
+
+
+const point =
+map.latLngToContainerPoint(
+[w.lat,w.lng]
+);
+
+
+ctx.beginPath();
+
+
+ctx.arc(
+
+point.x,
+
+point.y,
+
+w.radius,
+
+0,
+
+Math.PI * 2
+
+);
+
+
+ctx.strokeStyle =
+
+"rgba(255,40,40," +
+w.alpha +
+")";
+
+
+ctx.lineWidth =
+2;
+
+
+ctx.stroke();
+
+
+w.radius +=
+2.2;
+
+
+w.alpha -=
+0.015;
+
+
+});
+
+
+waves =
+waves.filter(w =>
+
+w.alpha > 0
+
+&&
+
+w.radius <
+w.maxRadius
+
+);
+
 
 requestAnimationFrame(
 animateWaves
 );
 
+
 }
+
 
 animateWaves();
 
 
-/* =========================
-FPS
-========================= */
+/* =====================
+UPDATE CANVAS
+SAAT MAP BERGERAK
 
-let frameCount = 0;
+===================== */
 
-let lastFpsTime =
-performance.now();
+map.on(
+"move zoom",
+function(){
 
-
-function calculateFPS(){
-
-frameCount++;
-
-const now =
-performance.now();
-
-
-if(
-now -
-lastFpsTime
->=
-1000
-){
-
-document
-.getElementById("fps")
-.innerText =
-frameCount;
-
-
-frameCount = 0;
-
-lastFpsTime = now;
+resizeCanvas();
 
 }
-
-
-requestAnimationFrame(
-calculateFPS
 );
 
-}
 
-calculateFPS();
+/* =====================
+CLOCK
+===================== */
 
-
-/* =========================
-TIME
-========================= */
-
-function updateTime(){
-
-const now =
-new Date();
-
+function updateClock(){
 
 document
-.getElementById("update")
+.getElementById(
+"clock"
+)
 .innerText =
 
-now
+new Date()
 .toLocaleTimeString(
 "id-ID"
 );
@@ -1098,18 +1391,34 @@ now
 }
 
 
-/* =========================
+setInterval(
+updateClock,
+1000
+);
+
+
+updateClock();
+
+
+/* =====================
 LOAD ALL
-========================= */
+
+===================== */
 
 async function loadAll(){
 
-await loadEarthquakes();
+await Promise.all([
 
-await loadVolcanoes();
+loadEarthquakes(),
+
+loadVolcanoes()
+
+]);
 
 }
 
+
+/* START */
 
 loadAll();
 
@@ -1118,7 +1427,7 @@ setInterval(
 
 loadAll,
 
-UPDATE_TIME
+REFRESH_TIME
 
 );
 
