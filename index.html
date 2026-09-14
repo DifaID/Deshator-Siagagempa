@@ -2,172 +2,191 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>DESHATOR LIVE SEISMOGRAPH</title>
+<title>DESHATOR • LIVE SEISMOGRAPH</title>
 
 <style>
 
 *{
-box-sizing:border-box;
+    box-sizing:border-box;
 }
 
 body{
-margin:0;
-background:#050505;
-color:white;
-font-family:Arial,sans-serif;
-padding:15px;
+    margin:0;
+    background:#050505;
+    color:white;
+    font-family:Arial,sans-serif;
+    padding:15px;
 }
 
 .container{
-max-width:900px;
-margin:auto;
+    max-width:950px;
+    margin:auto;
 }
 
 h1{
-text-align:center;
-color:cyan;
-margin:10px 0 5px;
-font-size:32px;
+    text-align:center;
+    color:#00ffff;
+    margin:10px 0 5px;
 }
 
 .subtitle{
-text-align:center;
-color:#777;
-font-size:12px;
-margin-bottom:20px;
-letter-spacing:1px;
+    text-align:center;
+    color:#777;
+    font-size:12px;
+    margin-bottom:20px;
+    letter-spacing:1px;
 }
 
 .card{
-background:#101010;
-border:1px solid #252525;
-border-radius:20px;
-padding:18px;
-margin-bottom:15px;
+    background:#101010;
+    border:1px solid #252525;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:15px;
 }
 
 .status{
-text-align:center;
-padding:14px;
-border-radius:12px;
-background:#181818;
-color:#ffd000;
-font-weight:bold;
-margin-bottom:15px;
+    text-align:center;
+    padding:14px;
+    background:#181818;
+    border-radius:12px;
+    font-weight:bold;
+    color:#ffd000;
 }
 
 .status.live{
-color:#00ff88;
+    color:#00ff88;
 }
 
 .status.error{
-color:#ff4444;
+    color:#ff4444;
 }
 
 .station-title{
-text-align:center;
-font-size:12px;
-color:#777;
-letter-spacing:2px;
+    text-align:center;
+    color:#777;
+    font-size:12px;
+    margin-top:20px;
+    letter-spacing:2px;
 }
 
 .station{
-text-align:center;
-font-size:26px;
-color:cyan;
-font-weight:bold;
-margin:10px;
+    text-align:center;
+    color:#00ffff;
+    font-size:22px;
+    font-weight:bold;
+    margin:10px;
 }
 
-.graph-box{
-position:relative;
-height:320px;
+select,
+button{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #333;
+    font-size:15px;
+    margin-top:10px;
 }
 
-canvas{
-width:100%;
-height:100%;
-background:#050505;
-border:1px solid #222;
-border-radius:12px;
-}
-
-.watermark{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:28px;
-font-weight:bold;
-color:rgba(255,255,255,.08);
-white-space:nowrap;
-pointer-events:none;
-}
-
-.data{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-margin-top:15px;
-}
-
-.box{
-background:#181818;
-padding:13px;
-border-radius:12px;
-text-align:center;
-}
-
-.label{
-font-size:11px;
-color:#777;
-}
-
-.value{
-font-size:16px;
-color:cyan;
-font-weight:bold;
-margin-top:6px;
-word-break:break-word;
+select{
+    background:#181818;
+    color:white;
 }
 
 button{
-width:100%;
-border:none;
-padding:14px;
-border-radius:12px;
-background:cyan;
-color:black;
-font-size:16px;
-font-weight:bold;
-margin-top:15px;
-cursor:pointer;
+    border:none;
+    background:#00ffff;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-button.disconnect{
-background:#ff4444;
-color:white;
+button.stop{
+    background:#ff4444;
+    color:white;
+}
+
+.graph-box{
+    position:relative;
+    height:350px;
+    margin-top:20px;
+}
+
+canvas{
+    width:100%;
+    height:100%;
+    background:#050505;
+    border:1px solid #222;
+    border-radius:12px;
+}
+
+.watermark{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:28px;
+    font-weight:bold;
+    color:rgba(255,255,255,.07);
+    white-space:nowrap;
+    pointer-events:none;
+}
+
+.data{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.box{
+    background:#181818;
+    border-radius:12px;
+    padding:12px;
+    text-align:center;
+}
+
+.label{
+    font-size:11px;
+    color:#777;
+}
+
+.value{
+    color:#00ffff;
+    font-weight:bold;
+    margin-top:7px;
+    font-size:15px;
+    word-break:break-word;
 }
 
 .info{
-color:#888;
-font-size:13px;
-line-height:1.7;
+    color:#999;
+    line-height:1.7;
+    font-size:13px;
 }
 
 .footer{
-text-align:center;
-color:#555;
-font-size:11px;
-margin:20px;
+    text-align:center;
+    color:#555;
+    font-size:11px;
+    margin:20px;
+}
+
+@media(max-width:500px){
+
+    .data{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .watermark{
+        font-size:17px;
+    }
+
 }
 
 </style>
-
 </head>
 
 <body>
@@ -177,7 +196,7 @@ margin:20px;
 <h1>🌍 DESHATOR</h1>
 
 <div class="subtitle">
-LIVE REAL-TIME SEISMIC MONITOR
+REAL-TIME SEISMIC WAVEFORM MONITOR
 </div>
 
 
@@ -187,14 +206,53 @@ LIVE REAL-TIME SEISMIC MONITOR
 class="status"
 id="status">
 
-🟡 SIAP MENGHUBUNGKAN
+🟡 MEMUAT SISTEM...
 
 </div>
 
 
 <div class="station-title">
 
-📡 STASIUN SEISMOGRAF
+📡 PILIH STREAM SEISMOGRAF
+
+</div>
+
+
+<select id="streamSelect">
+
+<option>
+Memuat daftar stream...
+</option>
+
+</select>
+
+
+<button onclick="loadStreams()">
+
+🔄 MUAT ULANG DAFTAR STREAM
+
+</button>
+
+
+<button onclick="connectSelectedStream()">
+
+📡 HUBUNGKAN WAVEFORM LIVE
+
+</button>
+
+
+<button
+class="stop"
+onclick="disconnectStream()">
+
+🔴 PUTUSKAN KONEKSI
+
+</button>
+
+
+<div class="station-title">
+
+STASIUN / STREAM AKTIF
 
 </div>
 
@@ -203,7 +261,7 @@ id="status">
 class="station"
 id="station">
 
-EARTHSCOPE SEEDLINK
+BELUM DIPILIH
 
 </div>
 
@@ -213,6 +271,7 @@ EARTHSCOPE SEEDLINK
 <canvas
 id="graph">
 </canvas>
+
 
 <div class="watermark">
 
@@ -225,30 +284,10 @@ IG.RMN.TMS.TYNP3
 
 <div class="data">
 
-
 <div class="box">
 
 <div class="label">
-
-SERVER
-
-</div>
-
-<div class="value">
-
-EARTHSCOPE
-
-</div>
-
-</div>
-
-
-<div class="box">
-
-<div class="label">
-
 KONEKSI
-
 </div>
 
 <div
@@ -265,9 +304,7 @@ OFFLINE
 <div class="box">
 
 <div class="label">
-
-DATA MASUK
-
+PAKET
 </div>
 
 <div
@@ -284,41 +321,37 @@ id="packets">
 <div class="box">
 
 <div class="label">
-
-UKURAN DATA
-
+SAMPLE
 </div>
 
 <div
 class="value"
-id="bytes">
+id="samples">
 
-0 B
+0
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="label">
+DATA
+</div>
+
+<div
+class="value"
+id="dataStatus">
+
+MENUNGGU
 
 </div>
 
 </div>
 
-
 </div>
-
-
-<button
-onclick="connectSeedLink()">
-
-📡 HUBUNGKAN LIVE SEISMOGRAF
-
-</button>
-
-
-<button
-class="disconnect"
-onclick="disconnectSeedLink()">
-
-🔴 PUTUSKAN KONEKSI
-
-</button>
-
 
 </div>
 
@@ -326,22 +359,14 @@ onclick="disconnectSeedLink()">
 <div class="card">
 
 <h3>
-
-📡 INFORMASI
-
+📡 INFORMASI SISTEM
 </h3>
 
 <div
 class="info"
 id="info">
 
-Website siap terhubung ke server
-SeedLink EarthScope.
-
-<br><br>
-
-Tekan tombol hubungkan untuk
-memulai koneksi.
+Memuat daftar stream dari EarthScope...
 
 </div>
 
@@ -350,11 +375,11 @@ memulai koneksi.
 
 <div class="footer">
 
-DATA STREAM: EARTHSCOPE SEEDLINK
+EARTHSCOPE • SEEDLINK • miniSEED
 
 <br><br>
 
-DESHATOR • SEISMIC MONITOR
+DESHATOR LIVE SEISMOGRAPH
 
 <br>
 
@@ -365,35 +390,168 @@ IG.RMN.TMS.TYNP3
 </div>
 
 
-<script>
+<script type="module">
 
 
-/* =======================
-CANVAS
-======================= */
+/* ==========================================
+   IMPORT SEISPLOTJS
+
+   Library untuk parsing data seismograf
+========================================== */
+
+
+import * as sp from
+
+"https://cdn.jsdelivr.net/npm/seisplotjs@3.2.7/dist/seisplotjs.min.js";
+
+
+
+/* ==========================================
+   KONFIGURASI
+========================================== */
+
+
+const EARTHSCOPE_HOST =
+
+"https://rtserve.earthscope.org";
+
+
+const SEEDLINK_URL =
+
+"wss://rtserve.earthscope.org/seedlink";
+
+
+const STREAMS_URL =
+
+EARTHSCOPE_HOST + "/streams/json";
+
+
+let socket = null;
+
+let packetCount = 0;
+
+let sampleCount = 0;
+
+let streamList = [];
+
+
+/* ==========================================
+   ELEMENT
+========================================== */
+
+
+const status =
+
+document.getElementById(
+"status"
+);
+
+
+const streamSelect =
+
+document.getElementById(
+"streamSelect"
+);
+
+
+const stationText =
+
+document.getElementById(
+"station"
+);
+
+
+const connectionText =
+
+document.getElementById(
+"connection"
+);
+
+
+const packetText =
+
+document.getElementById(
+"packets"
+);
+
+
+const sampleText =
+
+document.getElementById(
+"samples"
+);
+
+
+const dataStatus =
+
+document.getElementById(
+"dataStatus"
+);
+
+
+const info =
+
+document.getElementById(
+"info"
+);
+
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+
+function setStatus(
+
+text,
+
+type = ""
+
+){
+
+
+status.innerText =
+text;
+
+
+status.className =
+"status";
+
+
+if(type){
+
+status.classList.add(
+type
+);
+
+}
+
+
+}
+
+
+
+/* ==========================================
+   CANVAS
+========================================== */
 
 
 const canvas =
+
 document.getElementById(
 "graph"
 );
 
 
 const ctx =
+
 canvas.getContext(
 "2d"
 );
 
 
 let points = [];
-
-let socket = null;
-
-let packetCount = 0;
-
-let totalBytes = 0;
-
-let connected = false;
 
 
 
@@ -444,12 +602,6 @@ resizeCanvas
 
 );
 
-
-
-
-/* =======================
-GRAFIK
-======================= */
 
 
 function drawGraph(){
@@ -511,7 +663,7 @@ ctx.beginPath();
 
 
 ctx.strokeStyle =
-"cyan";
+"#00ffff";
 
 
 ctx.lineWidth = 2;
@@ -553,128 +705,22 @@ drawGraph();
 
 
 
-
-/* =======================
-TAMBAH SAMPLE
-
-HANYA DIGUNAKAN JIKA
-MINISEED BERHASIL
-DIURAI
-======================= */
+/* ==========================================
+   TAMBAH SAMPLE ASLI
+========================================== */
 
 
-function addSample(value){
+let maxAmplitude = 1;
 
 
-const center =
-
-canvas.height / 2;
-
-
-const scale =
-
-0.00001;
-
-
-let y =
-
-center -
-(value * scale);
-
-
-
-/* BATASI GRAFIK */
-
-
-if(y < 5){
-
-y = 5;
-
-}
+function addSamples(samples){
 
 
 if(
 
-y >
-canvas.height - 5
+!samples ||
 
-){
-
-y =
-canvas.height - 5;
-
-}
-
-
-
-points.push(y);
-
-
-points.shift();
-
-
-}
-
-
-
-
-/* =======================
-STATUS
-======================= */
-
-
-function setStatus(
-
-text,
-
-type = ""
-
-){
-
-
-const status =
-
-document.getElementById(
-"status"
-);
-
-
-status.innerText =
-text;
-
-
-status.className =
-"status";
-
-
-if(type){
-
-status.classList.add(
-type
-);
-
-}
-
-
-}
-
-
-
-
-/* =======================
-KONEKSI
-======================= */
-
-
-function connectSeedLink(){
-
-
-if(
-
-socket &&
-
-socket.readyState ===
-WebSocket.OPEN
+samples.length === 0
 
 ){
 
@@ -683,32 +729,532 @@ return;
 }
 
 
+/* CARI AMPLITUDO */
 
-setStatus(
 
-"🟡 MENGHUBUNGKAN KE EARTHSCOPE..."
+for(
+
+const value of samples
+
+){
+
+const absValue =
+Math.abs(value);
+
+
+if(
+
+absValue >
+maxAmplitude
+
+){
+
+maxAmplitude =
+absValue;
+
+}
+
+}
+
+
+/* MASUKKAN KE GRAFIK */
+
+
+const step =
+
+Math.max(
+
+1,
+
+Math.floor(
+samples.length / 50
+)
 
 );
 
 
-document
-.getElementById("info")
-.innerHTML =
+for(
 
-"Sedang membuat koneksi ke server "
+let i = 0;
+
+i < samples.length;
+
+i += step
+
+){
+
+
+const value =
+samples[i];
+
+
+const normalized =
+
+value /
+maxAmplitude;
+
+
+const y =
+
+canvas.height / 2
+
+-
+
+normalized *
+(canvas.height * 0.4);
+
+
+points.push(y);
+
+
+if(
+
+points.length >
+canvas.width
+
+){
+
+points.shift();
+
+}
+
+
+sampleCount++;
+
+}
+
+
+sampleText.innerText =
+sampleCount;
+
+
+dataStatus.innerText =
+"WAVEFORM LIVE";
+
+
+}
+
+
+
+/* ==========================================
+   AMBIL DAFTAR STREAM
+========================================== */
+
+
+window.loadStreams =
+async function(){
+
+
+setStatus(
+
+"🟡 MENGAMBIL DAFTAR STREAM..."
+
+);
+
+
+info.innerHTML =
+
+"Sedang meminta daftar stream "
 +
-"SeedLink EarthScope...";
+
+"yang tersedia dari server EarthScope.";
 
 
 
 try{
 
 
+const response =
+
+await fetch(
+
+STREAMS_URL +
+"?t=" +
+Date.now()
+
+);
+
+
+if(
+
+!response.ok
+
+){
+
+throw new Error(
+
+"HTTP " +
+response.status
+
+);
+
+}
+
+
+const data =
+
+await response.json();
+
+
+console.log(
+"STREAM DATA:",
+data
+);
+
+
+/* KOSONGKAN */
+
+
+streamSelect.innerHTML =
+"";
+
+
+streamList = [];
+
+
+/* ========================================
+   FORMAT JSON BISA BERBEDA
+======================================== */
+
+
+let streams = [];
+
+
+if(
+
+Array.isArray(data)
+
+){
+
+streams =
+data;
+
+}
+
+
+else if(
+
+data.streams
+
+){
+
+streams =
+data.streams;
+
+}
+
+
+else if(
+
+data.stream
+
+){
+
+streams =
+data.stream;
+
+}
+
+
+else{
+
+
+for(
+
+const key in data
+
+){
+
+if(
+
+Array.isArray(
+data[key]
+)
+
+){
+
+streams =
+data[key];
+
+break;
+
+}
+
+}
+
+
+}
+
+
+/* ========================================
+   BATASI AGAR WEBSITE TIDAK BERAT
+======================================== */
+
+
+streams =
+streams.slice(
+
+0,
+
+200
+
+);
+
+
+
+if(
+
+streams.length === 0
+
+){
+
+throw new Error(
+
+"Daftar stream kosong"
+
+);
+
+}
+
+
+/* ========================================
+   BUAT OPTION
+======================================== */
+
+
+streams.forEach(
+
+(stream,index) => {
+
+
+let streamID;
+
+
+if(
+
+typeof stream ===
+"string"
+
+){
+
+streamID =
+stream;
+
+}
+
+
+else{
+
+
+streamID =
+
+stream.stream ||
+stream.id ||
+stream.streamid ||
+stream.name ||
+JSON.stringify(stream);
+
+
+}
+
+
+streamList.push(
+streamID
+);
+
+
+const option =
+
+document.createElement(
+"option"
+);
+
+
+option.value =
+streamID;
+
+
+option.textContent =
+
+streamID;
+
+
+streamSelect.appendChild(
+option
+);
+
+
+}
+
+
+);
+
+
+setStatus(
+
+"🟢 " +
+
+streamList.length +
+
+" STREAM DITEMUKAN",
+
+"live"
+
+);
+
+
+info.innerHTML =
+
+"📡 Daftar stream berhasil dimuat.<br><br>"
+
++
+
+"Pilih salah satu stream kemudian "
+
++
+
+"tekan <b>HUBUNGKAN WAVEFORM LIVE</b>.";
+
+
+}
+
+
+catch(error){
+
+
+console.error(error);
+
+
+setStatus(
+
+"🔴 GAGAL MEMUAT STREAM",
+
+"error"
+
+);
+
+
+info.innerHTML =
+
+"Server tidak memberikan daftar "
+
++
+
+"stream melalui HTTP/CORS.<br><br>"
+
++
+
+"Error: " +
+
+error.message +
+
+"<br><br>"
+
++
+
+"Koneksi SeedLink masih bisa "
+
++
+
+"membutuhkan konfigurasi stream "
+
++
+
+"melalui protokol SeedLink.";
+
+
+streamSelect.innerHTML =
+
+"<option>Daftar otomatis tidak tersedia</option>";
+
+
+}
+
+
+};
+
+
+
+
+/* ==========================================
+   KONEKSI SEEDLINK
+========================================== */
+
+
+window.connectSelectedStream =
+function(){
+
+
+const selected =
+
+streamSelect.value;
+
+
+if(
+
+!selected ||
+
+selected.includes(
+"Memuat"
+)
+
+||
+
+selected.includes(
+"tidak tersedia"
+)
+
+){
+
+alert(
+
+"Pilih stream terlebih dahulu"
+
+);
+
+return;
+
+}
+
+
+disconnectStream();
+
+
+packetCount = 0;
+
+sampleCount = 0;
+
+packetText.innerText = 0;
+
+sampleText.innerText = 0;
+
+
+stationText.innerText =
+selected;
+
+
+setStatus(
+
+"🟡 MENGHUBUNGKAN SEEDLINK..."
+
+);
+
+
+connectionText.innerText =
+"MENGHUBUNGKAN";
+
+
+dataStatus.innerText =
+"MENUNGGU DATA";
+
+
+try{
+
+
 socket =
+
 new WebSocket(
-
-"wss://rtserve.earthscope.org/seedlink"
-
+SEEDLINK_URL
 );
 
 
@@ -721,46 +1267,322 @@ socket.onopen =
 function(){
 
 
-connected = true;
+connectionText.innerText =
+"ONLINE";
 
 
 setStatus(
 
-"🟢 TERHUBUNG KE SEEDLINK",
+"🟢 SEEDLINK TERHUBUNG",
 
 "live"
 
 );
 
 
-document
-.getElementById(
-"connection"
+info.innerHTML =
+
+"📡 Koneksi berhasil.<br><br>"
+
++
+
+"Meminta stream:<br>"
+
++
+
+"<b>" +
+
+selected +
+
+"</b>";
+
+
+/* ======================================
+   HELLO
+====================================== */
+
+
+socket.send(
+"HELLO"
+);
+
+
+/*
+   CATATAN:
+
+   Format stream EarthScope bisa berupa
+   FDSN Source ID seperti:
+
+   FDSN:IU_ANMO_00_B_H_Z/MSEED
+
+   SeedLink v4 menggunakan pemilihan
+   stream sesuai pola stream server.
+
+   Karena format stream dari /streams/json
+   dapat langsung digunakan sebagai referensi,
+   perintah SELECT dikirim berdasarkan
+   stream yang dipilih.
+*/
+
+
+setTimeout(
+
+function(){
+
+
+try{
+
+
+/* JIKA FORMAT FDSN */
+
+
+let commandStream =
+selected;
+
+
+/* Hapus suffix format */
+
+
+commandStream =
+commandStream
+.replace(
+"/MSEED3",
+""
 )
-.innerText =
-"ONLINE";
+.replace(
+"/MSEED",
+""
+);
 
 
-document
-.getElementById("info")
-.innerHTML =
+/* Hapus FDSN: */
 
-"📡 Koneksi WebSocket berhasil.<br><br>"
+commandStream =
+commandStream.replace(
+"FDSN:",
+""
+);
+
+
+/*
+   Untuk SeedLink v3 diperlukan
+   STATION + SELECT.
+
+   Jika format stream:
+   NET_STA_LOC_B_S_SS
+
+   Contoh:
+   IU_ANMO_00_B_H_Z
+*/
+
+
+const parts =
+
+commandStream.split(
+"_"
+);
+
+
+if(
+
+parts.length >= 5
+
+){
+
+
+const network =
+parts[0];
+
+
+const station =
+parts[1];
+
+
+const location =
+parts[2];
+
+
+const band =
+parts[3];
+
+
+const source =
+parts[4];
+
+
+const subsource =
+parts[5] || "";
+
+
+/*
+   SELECT SeedLink v3 channel
+
+   Contoh channel:
+   00BHZ
+*/
+
+
+const channel =
+
+location +
+
+band +
+
+source +
+
+subsource;
+
+
+/*
+   STATION
+
+   Format:
+   STATION station network
+*/
+
+
+socket.send(
+
+"STATION " +
+
+station +
+
+" " +
+
+network
+
+);
+
+
+/*
+   SELECT
+*/
+
+
+socket.send(
+
+"SELECT " +
+
+channel +
+
+".D"
+
+);
+
+
+/*
+   DATA realtime
+*/
+
+
+socket.send(
+"DATA"
+);
+
+
+/*
+   END handshake
+*/
+
+
+socket.send(
+"END"
+);
+
+
+info.innerHTML +=
+
+"<br><br>"
 
 +
 
-"Menunggu konfigurasi stream "
+"📡 Perintah stream dikirim:<br>"
+
 +
 
-"dan paket waveform dari server.";
+"STATION " +
+
+station +
+
+" " +
+
+network +
+
+"<br>"
+
++
+
+"SELECT " +
+
+channel;
+
+
+}
+
+
+else{
+
+
+/*
+   FALLBACK:
+
+   Kirim INFO STREAMS
+   agar server memberi informasi
+*/
+
+
+socket.send(
+"INFO STREAMS"
+);
+
+
+info.innerHTML +=
+
+"<br><br>"
+
++
+
+"⚠️ Format stream tidak "
+
++
+
+"cocok untuk parser otomatis. "
+
++
+
+"Meminta INFO STREAMS.";
+
+
+}
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+}
+
+
+},
+
+1000
+
+);
 
 
 };
 
 
 
+/* ==========================================
+   DATA MASUK
+========================================== */
+
+
 socket.onmessage =
-function(event){
+async function(event){
 
 
 /* PESAN TEXT */
@@ -775,7 +1597,7 @@ typeof event.data ===
 
 
 console.log(
-"SEEDLINK:",
+"SEEDLINK TEXT:",
 event.data
 );
 
@@ -800,64 +1622,218 @@ ArrayBuffer
 packetCount++;
 
 
-totalBytes +=
-event.data.byteLength;
-
-
-
-document
-.getElementById(
-"packets"
-)
-.innerText =
+packetText.innerText =
 packetCount;
 
 
+dataStatus.innerText =
+"DATA DITERIMA";
 
-document
-.getElementById(
-"bytes"
-)
-.innerText =
 
-formatBytes(
-totalBytes
+try{
+
+
+const arrayBuffer =
+event.data;
+
+
+/* ======================================
+   COBA PARSE MINISEED
+
+   Nama fungsi dapat berbeda tergantung
+   build Seisplotjs.
+====================================== */
+
+
+let records = null;
+
+
+/*
+   Coba parser miniseed
+*/
+
+
+if(
+
+sp.miniseed
+
+&&
+
+sp.miniseed.parseDataRecords
+
+){
+
+records =
+
+sp.miniseed
+.parseDataRecords(
+arrayBuffer
+);
+
+}
+
+
+else if(
+
+sp.mseed3
+
+&&
+
+sp.mseed3.parseDataRecords
+
+){
+
+records =
+
+sp.mseed3
+.parseDataRecords(
+arrayBuffer
+);
+
+}
+
+
+console.log(
+"MINISEED RECORDS:",
+records
 );
 
 
+/* ======================================
+   AMBIL SAMPLE
+====================================== */
 
-document
-.getElementById(
-"info"
-)
-.innerHTML =
 
-"📦 Paket binary miniSEED diterima.<br><br>"
+if(records){
 
-+
 
-"Jumlah paket: <b>"
-+
-packetCount
-+
-"</b><br>"
+for(
 
-+
+const record of records
 
-"Ukuran data: <b>"
-+
-formatBytes(totalBytes)
-+
-"</b><br><br>"
+){
 
-+
 
-"Data ini berasal dari stream "
-+
+let samples =
+null;
 
-"seismik server.";
+
+/* Berbagai kemungkinan API */
+
+
+if(
+
+record.decompress
+
+){
+
+samples =
+record.decompress();
 
 }
+
+
+else if(
+
+record.data
+
+){
+
+samples =
+record.data;
+
+}
+
+
+else if(
+
+record.samples
+
+){
+
+samples =
+record.samples;
+
+}
+
+
+if(samples){
+
+addSamples(
+samples
+);
+
+}
+
+}
+
+
+setStatus(
+
+"🟢 WAVEFORM ASLI MASUK",
+
+"live"
+
+);
+
+
+dataStatus.innerText =
+"WAVEFORM LIVE";
+
+
+}
+
+else{
+
+
+dataStatus.innerText =
+"BINARY DITERIMA";
+
+
+}
+
+
+}
+
+catch(error){
+
+
+console.error(
+"PARSE ERROR:",
+error
+);
+
+
+dataStatus.innerText =
+"DATA BINARY";
+
+
+info.innerHTML =
+
+"📦 Paket miniSEED asli diterima, "
+
++
+
+"tetapi parser perlu menyesuaikan "
+
++
+
+"format packet SeedLink server.<br><br>"
+
++
+
+"Error parser: "
+
++
+
+error.message;
+
+
+}
+
+
+}
+
 
 };
 
@@ -867,7 +1843,11 @@ socket.onerror =
 function(error){
 
 
-console.log(error);
+console.error(error);
+
+
+connectionText.innerText =
+"ERROR";
 
 
 setStatus(
@@ -879,14 +1859,6 @@ setStatus(
 );
 
 
-document
-.getElementById(
-"connection"
-)
-.innerText =
-"ERROR";
-
-
 };
 
 
@@ -895,15 +1867,7 @@ socket.onclose =
 function(){
 
 
-connected =
-false;
-
-
-document
-.getElementById(
-"connection"
-)
-.innerText =
+connectionText.innerText =
 "OFFLINE";
 
 
@@ -924,7 +1888,7 @@ setStatus(
 catch(error){
 
 
-console.log(error);
+console.error(error);
 
 
 setStatus(
@@ -939,218 +1903,65 @@ setStatus(
 }
 
 
-}
+};
 
 
 
 
-/* =======================
-PUTUSKAN
-======================= */
+/* ==========================================
+   PUTUS KONEKSI
+========================================== */
 
 
-function disconnectSeedLink(){
+window.disconnectStream =
+function(){
 
 
 if(socket){
 
 
+try{
+
+
 socket.close();
 
 
-socket = null;
+}
+
+catch(error){
+
+
+console.log(error);
+
+}
+
+
+socket =
+null;
 
 
 }
 
 
-connected = false;
-
-
-document
-.getElementById(
-"connection"
-)
-.innerText =
+connectionText.innerText =
 "OFFLINE";
 
 
-setStatus(
+dataStatus.innerText =
+"BERHENTI";
 
-"🔴 KONEKSI DIPUTUS"
 
-);
+};
 
 
-}
 
 
+/* ==========================================
+   LOAD AWAL
+========================================== */
 
 
-/* =======================
-FORMAT BYTES
-======================= */
-
-
-function formatBytes(bytes){
-
-
-if(bytes === 0){
-
-return "0 B";
-
-}
-
-
-const units =
-
-[
-
-"B",
-
-"KB",
-
-"MB",
-
-"GB"
-
-];
-
-
-const i =
-
-Math.floor(
-
-Math.log(bytes) /
-
-Math.log(1024)
-
-);
-
-
-return (
-
-bytes /
-
-Math.pow(
-
-1024,
-
-i
-
-)
-
-).toFixed(2)
-
-+
-
-" "
-
-+
-
-units[i];
-
-
-}
-
-
-/* =======================
-SUARA
-======================= */
-
-
-let audioReady = false;
-
-
-document.addEventListener(
-
-"click",
-
-function(){
-
-
-audioReady =
-true;
-
-
-},
-
-{
-
-once:true
-
-}
-
-);
-
-
-function playSound(){
-
-
-if(!audioReady){
-
-return;
-
-}
-
-
-const AudioContext =
-
-window.AudioContext ||
-
-window.webkitAudioContext;
-
-
-if(!AudioContext){
-
-return;
-
-}
-
-
-const audio =
-
-new AudioContext();
-
-
-const oscillator =
-
-audio.createOscillator();
-
-
-const gain =
-
-audio.createGain();
-
-
-oscillator.connect(gain);
-
-
-gain.connect(
-audio.destination
-);
-
-
-oscillator.frequency.value =
-120;
-
-
-gain.gain.value =
-0.15;
-
-
-oscillator.start();
-
-
-oscillator.stop(
-
-audio.currentTime +
-0.15
-
-);
-
-
-}
+loadStreams();
 
 
 </script>
